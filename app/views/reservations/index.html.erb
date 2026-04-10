@@ -1,0 +1,105 @@
+<!-- app/views/reservations/index.html.erb -->
+
+<div class="reservation-page">
+
+  <div class="main-layout">
+
+    <!-- カレンダー -->
+    <div class="calendar-panel">
+      <div class="calendar-header">
+        <%= link_to "‹",
+          reservations_index_path(
+            year: @prev_month.year,
+            month: @prev_month.month
+          ),
+          class: "month-arrow" %>
+
+        <h2><%= @selected_date.strftime("%Y年 %-m月") %></h2>
+
+        <%= link_to "›",
+          reservations_index_path(
+            year: @next_month.year,
+            month: @next_month.month
+          ),
+          class: "month-arrow" %>
+      </div>
+
+      <div class="weekday-row">
+        <div>日</div>
+        <div>月</div>
+        <div>火</div>
+        <div>水</div>
+        <div>木</div>
+        <div>金</div>
+        <div>土</div>
+      </div>
+
+      <div class="calendar-grid">
+        <% @start_wday.times do %>
+          <div></div>
+        <% end %>
+
+        <% @days.each do |day| %>
+          <% date = Date.new(@selected_date.year, @selected_date.month, day) %>
+
+          <%= link_to reservations_index_path(
+            year: date.year,
+            month: date.month,
+            day: day
+          ), class: "day-link" do %>
+            <div class="day <%= 'selected-day' if day == @selected_date.day %>">
+              <%= day %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 空き状況 -->
+    <div class="slots-panel">
+      <h2>空き状況</h2>
+      <p><%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
+
+      <% @time_slots.each do |slot| %>
+        <% disabled = slot[:available] == 0 %>
+
+        <% if disabled %>
+          <div class="slot disabled">
+            <%= slot[:time] %> （<%= slot[:available] %>/<%= slot[:total] %>）
+          </div>
+        <% else %>
+          <%= link_to reservations_index_path(
+            year: @selected_date.year,
+            month: @selected_date.month,
+            day: @selected_date.day,
+            time: slot[:time]
+          ), class: "slot-link" do %>
+            <div class="slot <%= 'selected-slot' if @selected_time == slot[:time] %>">
+              <%= slot[:time] %> （<%= slot[:available] %>/<%= slot[:total] %>）
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- 下段 summary -->
+  <% if @selected_time.present? %>
+    <div class="summary-wrapper">
+      <div class="summary">
+        <h3>選択内容</h3>
+        <p>日付：<%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
+        <p>時間：<%= @selected_time %></p>
+
+        <%= link_to "この内容で予約を進める",
+          reservations_confirm_path(
+            date: @selected_date,
+            time: @selected_time
+          ),
+          class: "confirm-button" %>
+      </div>
+    </div>
+  <% end %>
+
+</div>

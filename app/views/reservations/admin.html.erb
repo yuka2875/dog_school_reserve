@@ -1,0 +1,108 @@
+<div class="admin-layout">
+
+  <aside class="sidebar collapsed" id="sidebar">
+
+  <div class="sidebar-header">
+    <h2 class="logo-text">予約管理</h2>
+
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-menu">
+    <a href="/admin/reservations" class="active">
+      <i class="bi bi-grid"></i>
+      <span>ダッシュボード</span>
+    </a>
+
+    <a href="#">
+      <i class="bi bi-people"></i>
+      <span>顧客管理</span>
+    </a>
+
+    <a href="#">
+      <i class="bi bi-calendar3"></i>
+      <span>予約管理</span>
+    </a>
+  </nav>
+</aside>
+
+  <main class="admin-main">
+
+    <h1>ダッシュボード</h1>
+    <p>予約と顧客の概要をご確認ください</p>
+
+    <div class="stats-grid">
+
+  <div class="stat-card">
+    <div class="stat-left">
+      <p class="stat-label">総顧客数</p>
+      <p class="stat-value">248</p>
+      <p class="stat-change">+12%</p>
+    </div>
+    <div class="stat-icon-circle">
+      <i class="bi bi-people"></i>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-left">
+      <p class="stat-label">今月の予約</p>
+      <p class="stat-value">87</p>
+      <p class="stat-change">+23%</p>
+    </div>
+    <div class="stat-icon-circle">
+      <i class="bi bi-calendar3"></i>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-left">
+      <p class="stat-label">完了予約</p>
+      <p class="stat-value">156</p>
+      <p class="stat-change">+8%</p>
+    </div>
+    <div class="stat-icon-circle">
+      <i class="bi bi-check-circle"></i>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-left">
+      <p class="stat-label">売上（今月）</p>
+      <p class="stat-value">¥892,000</p>
+      <p class="stat-change">+15%</p>
+    </div>
+    <div class="stat-icon-circle">
+      <i class="bi bi-graph-up"></i>
+    </div>
+  </div>
+
+</div>
+
+    <div class="recent-bookings">
+      <h2>最近の予約</h2>
+
+      <% @reservations.each do |r| %>
+        <div class="booking-card">
+          <div>
+            <p class="booking-name">予約</p>
+            <p><%= r.reserved_date %></p>
+          </div>
+
+          <div class="booking-right">
+            <p><%= r.reserved_time %></p>
+            <span class="status-badge">確定</span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </main>
+</div>
+<script>
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+  }
+</script>

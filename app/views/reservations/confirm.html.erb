@@ -1,0 +1,15 @@
+<div class="confirm-page">
+  <div class="confirm-card">
+    <h2>予約確認</h2>
+
+    <p>日付：<%= @selected_date %></p>
+    <p>時間：<%= @selected_time %></p>
+
+    <%= link_to "予約確定",
+      reservations_complete_path(
+        date: @selected_date,
+        time: @selected_time
+      ),
+      class: "confirm-button" %>
+  </div>
+</div>

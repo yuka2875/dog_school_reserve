@@ -1,0 +1,370 @@
+/* =========================
+   予約画面専用
+========================= */
+
+.reservation-page {
+  background: #eef3fb;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* 上段 */
+.reservation-page .main-layout {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 24px 20px 0;
+  box-sizing: border-box;
+}
+
+/* 下段 */
+.reservation-page .summary-wrapper {
+  width: 100%;
+  max-width: 1240px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* パネル */
+.reservation-page .calendar-panel,
+.reservation-page .slots-panel,
+.reservation-page .summary {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+/* summary */
+.reservation-page .summary {
+  border: 2px solid #2563eb;
+  width: 100%;
+}
+
+.reservation-page .summary h3 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+
+.reservation-page .summary p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.reservation-page .summary .confirm-button {
+  display: inline-block;
+  min-width: 220px;
+  padding: 14px 28px;
+  margin-top: 16px;
+  background: #2563eb;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* カレンダー */
+.reservation-page .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.reservation-page .month-arrow {
+  text-decoration: none;
+  font-size: 24px;
+  color: #111827;
+}
+
+.reservation-page .weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 12px;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.reservation-page .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.reservation-page .day-link {
+  text-decoration: none;
+}
+
+.reservation-page .day {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: black;
+  font-size: 14px;
+}
+
+.reservation-page .selected-day {
+  background: #2563eb;
+  color: white;
+}
+
+/* 空き枠 */
+.reservation-page .slot-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.reservation-page .slot {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: white;
+  font-size: 14px;
+}
+
+.reservation-page .selected-slot {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+}
+
+.reservation-page .disabled {
+  color: #ccc;
+}
+
+/* =========================
+   ダッシュボード
+========================= */
+
+/* 全体 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #eef5f5;
+}
+
+/* レイアウト */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* =========================
+   サイドバー
+========================= */
+
+.sidebar {
+  width: 72px;
+  background: #045d75;
+  color: white;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.logo-text {
+  display: none;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 0;
+  align-items: center;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: white;
+}
+
+.sidebar-menu a.active {
+  background: #66c9c8;
+}
+
+.sidebar-menu i {
+  font-size: 18px;
+}
+
+.sidebar-menu span {
+  display: none;
+}
+
+/* =========================
+   メイン
+========================= */
+
+.admin-main {
+  flex: 1;
+  background: #eef5f5;
+  padding: 20px 28px;
+}
+
+/* タイトル */
+.admin-main h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #0f2c3f;
+  margin: 0 0 6px 0;
+}
+
+.admin-main p {
+  font-size: 16px;
+  color: #5a7878;
+  margin: 0 0 24px 0;
+}
+
+/* =========================
+   統計カード
+========================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin: 20px 0 24px;
+}
+
+.stat-card {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #5a7878;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f2c3f;
+  margin: 0;
+}
+
+.stat-change {
+  font-size: 14px;
+  color: #5dbebd;
+  margin-top: 6px;
+}
+
+.stat-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #d9f4f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-circle i {
+  font-size: 20px;
+  color: #5dbebd;
+}
+
+/* =========================
+   最近予約
+========================= */
+
+.recent-bookings {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recent-bookings h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f2c3f;
+  margin-bottom: 18px;
+}
+
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  background: #eef7f7;
+  border-radius: 18px;
+}
+
+.booking-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f2c3f;
+  margin-bottom: 4px;
+}
+
+.booking-service {
+  font-size: 14px;
+  color: #5a7878;
+}
+
+.booking-right {
+  text-align: right;
+}
+
+.booking-right p {
+  font-size: 14px;
+  color: #5a7878;
+  margin-bottom: 8px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.confirmed {
+  background: #d9f4f2;
+  color: #5dbebd;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #d4a100;
+}
