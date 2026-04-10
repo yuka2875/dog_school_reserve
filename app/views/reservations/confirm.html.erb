@@ -1,15 +1,65 @@
 <div class="confirm-page">
   <div class="confirm-card">
-    <h2>予約確認</h2>
+    <h2>ご予約者情報</h2>
 
-    <p>日付：<%= @selected_date %></p>
-    <p>時間：<%= @selected_time %></p>
+    <%= form_with url: reservations_complete_path, method: :get, class: "confirm-form" do |f| %>
+      <%= hidden_field_tag :date, @selected_date %>
+      <%= hidden_field_tag :time, @selected_time %>
 
-    <%= link_to "予約確定",
-      reservations_complete_path(
-        date: @selected_date,
-        time: @selected_time
-      ),
-      class: "confirm-button" %>
+      <div class="full-width reservation-info">
+        <p>日付：<%= @selected_date %></p>
+        <p>時間：<%= @selected_time %></p>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :owner_name, "①飼い主様のお名前" %>
+        <%= f.text_field :owner_name, placeholder: "山田 太郎" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :phone_number, "②電話番号" %>
+        <%= f.text_field :phone_number, placeholder: "090-1234-5678" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :dog_name, "③わんちゃんのお名前" %>
+        <%= f.text_field :dog_name, placeholder: "ポチ" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :dog_age, "④年齢" %>
+        <%= f.text_field :dog_age, placeholder: "3歳" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :dog_gender, "⑤性別" %>
+        <%= f.select :dog_gender, ["選択してください", "オス", "メス"] %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :dog_breed, "⑥犬種" %>
+        <%= f.text_field :dog_breed, placeholder: "トイプードル" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :service_type, "⑦希望サービス" %>
+        <%= f.select :service_type, [
+          ["選択してください", ""],
+          ["犬の幼稚園", "kindergarten"],
+          ["保育園", "nursery"],
+          ["ホテル", "hotel"],
+          ["一時預かり", "temporary_care"]
+        ] %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :referral_source, "⑨当店を知ったきっかけ" %>
+        <%= f.text_field :referral_source, placeholder: "Instagram" %>
+      </div>
+
+      <div class="full-width">
+        <%= f.submit "予約確定", class: "confirm-button" %>
+      </div>
+    <% end %>
   </div>
 </div>

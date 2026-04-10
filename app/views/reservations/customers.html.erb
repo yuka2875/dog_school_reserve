@@ -1,0 +1,89 @@
+<div class="admin-layout">
+
+  <%= render "shared/sidebar" %>
+
+  <main class="admin-main">
+  <div class="customers-header">
+    <div>
+      <h1>顧客管理</h1>
+      <p>顧客情報の管理と閲覧</p>
+    </div>
+
+    <%= link_to new_customer_path,
+      class: "add-customer-btn" do %>
+      <i class="bi bi-plus-lg"></i> 新規顧客追加
+    <% end %>
+  </div>
+
+  <div class="customers-card">
+    <div class="search-bar">
+      <%= form_with url: "/admin/customers",
+        method: :get,
+        local: true do %>
+
+      <%= text_field_tag :search,
+        params[:search],
+        placeholder: "名前、電話番号で検索..." %>
+      <% end %>
+    </div>
+
+    <table class="customers-table">
+      <thead>
+      <tr>
+        <th>名前</th>
+        <th>電話</th>
+        <th>犬名</th>
+        <th>犬種</th>
+        <th>年齢</th>
+        <th>性別</th>
+        <th>住所</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @customers.each do |c| %>
+          <tr>
+            <td class="customer-name"><%= c.owner_name %></td>
+
+            <td>
+              <i class="bi bi-telephone"></i>
+              <%= c.phone_number %>
+            </td>
+
+            <td><%= c.dog_name %></td>
+            <td><%= c.dog_breed %></td>
+            <td><%= c.dog_age %></td>
+            <td><%= c.dog_gender %></td>
+            <td><%= c.address %></td>
+
+            <td class="action-buttons">
+              <%= link_to edit_customer_path(c.id),
+                class: "icon-btn edit-btn" do %>
+                <i class="bi bi-pencil"></i>
+              <% end %>
+
+              <%= button_to destroy_customer_path(c.id),
+                method: :delete,
+                data: { confirm: "削除しますか？" },
+                class: "icon-btn delete-btn" do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</main>
+</div>
+
+<script>
+document.addEventListener("turbo:load", function () {
+  window.toggleSidebar = function () {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      sidebar.classList.toggle("collapsed");
+    }
+  };
+});
+</script>

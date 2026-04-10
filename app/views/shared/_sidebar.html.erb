@@ -1,0 +1,26 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2 class="logo-text">管理</h2>
+
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-menu">
+    <a href="/admin/reservations" class="<%= 'active' if current_page?('/admin/reservations') %>">
+      <i class="bi bi-grid"></i>
+      <span>ダッシュボード</span>
+    </a>
+
+    <a href="/admin/customers" class="<%= 'active' if current_page?('/admin/customers') %>">
+      <i class="bi bi-people"></i>
+      <span>顧客管理</span>
+    </a>
+
+    <a href="#">
+      <i class="bi bi-calendar3"></i>
+      <span>予約管理</span>
+    </a>
+  </nav>
+</aside>

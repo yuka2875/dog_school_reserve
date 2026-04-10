@@ -10,11 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_064020) do
-  create_table "reservations", force: :cascade do |t|
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_083920) do
+  create_table "customers", force: :cascade do |t|
+    t.string "address"
     t.datetime "created_at", null: false
+    t.string "dog_age"
+    t.string "dog_breed"
+    t.string "dog_gender"
+    t.string "dog_name"
+    t.string "owner_name"
+    t.string "phone_number"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.string "dog_age"
+    t.string "dog_breed"
+    t.string "dog_gender"
+    t.string "dog_name"
+    t.string "owner_name"
+    t.string "phone_number"
+    t.boolean "pickup_required"
+    t.string "referral_source"
     t.date "reserved_date"
     t.string "reserved_time"
+    t.integer "service_type"
     t.datetime "updated_at", null: false
   end
 end

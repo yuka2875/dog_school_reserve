@@ -1,6 +1,9 @@
 <!-- app/views/reservations/index.html.erb -->
 
 <div class="reservation-page">
+  <%= form_with url: reservations_complete_path, method: :post do |f| %>
+
+
 
   <div class="main-layout">
 
@@ -10,7 +13,8 @@
         <%= link_to "‹",
           reservations_index_path(
             year: @prev_month.year,
-            month: @prev_month.month
+            month: @prev_month.month,
+            reservation: @reservation_data
           ),
           class: "month-arrow" %>
 
@@ -19,7 +23,8 @@
         <%= link_to "›",
           reservations_index_path(
             year: @next_month.year,
-            month: @next_month.month
+            month: @next_month.month,
+            reservation: @reservation_data
           ),
           class: "month-arrow" %>
       </div>
@@ -45,7 +50,8 @@
           <%= link_to reservations_index_path(
             year: date.year,
             month: date.month,
-            day: day
+            day: day,
+            reservation: @reservation_data
           ), class: "day-link" do %>
             <div class="day <%= 'selected-day' if day == @selected_date.day %>">
               <%= day %>
@@ -72,10 +78,15 @@
             year: @selected_date.year,
             month: @selected_date.month,
             day: @selected_date.day,
-            time: slot[:time]
+            time: slot[:time],
+            reservation: @reservation_data
           ), class: "slot-link" do %>
-            <div class="slot <%= 'selected-slot' if @selected_time == slot[:time] %>">
-              <%= slot[:time] %> （<%= slot[:available] %>/<%= slot[:total] %>）
+            <div class="slot
+              <%= 'disabled' if disabled %>
+              <%= 'low-stock' if slot[:available] == 1 %>
+              <%= 'selected-slot' if @selected_time == slot[:time] %>">
+              <%= slot[:time] %> 
+            （<%= slot[:available] %>/<%= slot[:total] %>）
             </div>
           <% end %>
         <% end %>
@@ -86,20 +97,29 @@
 
   <!-- 下段 summary -->
   <% if @selected_time.present? %>
-    <div class="summary-wrapper">
-      <div class="summary">
-        <h3>選択内容</h3>
-        <p>日付：<%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
-        <p>時間：<%= @selected_time %></p>
+  <div class="summary-wrapper">
+    <div class="summary">
+      <h3>選択内容</h3>
+      <%= hidden_field_tag :date, @selected_date %>
+      <%= hidden_field_tag :time, @selected_time %>
 
-        <%= link_to "この内容で予約を進める",
-          reservations_confirm_path(
-            date: @selected_date,
-            time: @selected_time
-          ),
-          class: "confirm-button" %>
-      </div>
+      <%= hidden_field_tag "reservation[owner_name]", @reservation_data["owner_name"] %>
+      <%= hidden_field_tag "reservation[phone_number]", @reservation_data["phone_number"] %>
+      <%= hidden_field_tag "reservation[dog_name]", @reservation_data["dog_name"] %>
+      <%= hidden_field_tag "reservation[dog_age]", @reservation_data["dog_age"] %>
+      <%= hidden_field_tag "reservation[dog_gender]", @reservation_data["dog_gender"] %>
+      <%= hidden_field_tag "reservation[dog_breed]", @reservation_data["dog_breed"] %>
+      <%= hidden_field_tag "reservation[service_type]", @reservation_data["service_type"] %>
+      <%= hidden_field_tag "reservation[referral_source]", @reservation_data["referral_source"] %>
+      <%= hidden_field_tag "reservation[address]", @reservation_data["address"] %>
+      <%= hidden_field_tag "reservation[pickup_required]", @reservation_data["pickup_required"] %>
+      <p>日付：<%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
+      <p>時間：<%= @selected_time %></p>
+
+      <%= f.submit "この内容で予約を確定する", class: "confirm-button" %>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
+<% end %>
 </div>

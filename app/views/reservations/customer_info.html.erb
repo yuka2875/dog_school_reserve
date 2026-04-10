@@ -1,0 +1,70 @@
+<div class="confirm-page">
+  <div class="confirm-card">
+    <h2>ご予約者情報</h2>
+
+    <%= form_with model: @reservation, url: reservations_index_path, method: :get do |f| %>
+      <div class="confirm-form">
+        <div class="form-group">
+          <%= f.label :owner_name, "①飼い主様のお名前" %>
+          <%= f.text_field :owner_name %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :phone_number, "②電話番号" %>
+          <%= f.text_field :phone_number %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :dog_name, "③わんちゃんのお名前" %>
+          <%= f.text_field :dog_name %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :dog_age, "④年齢" %>
+          <%= f.text_field :dog_age %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :dog_gender, "⑤性別" %>
+          <%= f.select :dog_gender, ["オス", "メス"] %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :dog_breed, "⑥犬種" %>
+          <%= f.text_field :dog_breed %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :service_type, "⑦希望サービス" %>
+          <%= f.select :service_type, [
+            ["犬の幼稚園", "kindergarten"],
+            ["保育園", "nursery"],
+            ["ホテル", "hotel"],
+            ["一時預かり", "temporary_care"]
+          ] %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :referral_source, "⑨当店を知ったきっかけ" %>
+          <%= f.text_field :referral_source %>
+        </div>
+
+        <div class="form-group full-width">
+          <%= f.label :address, "住所" %>
+          <%= f.text_field :address %>
+        </div>
+
+        <div class="form-group full-width">
+          <%= f.label :pickup_required, "送迎希望" %>
+          <%= f.select :pickup_required, [["なし", false], ["あり", true]] %>
+        </div>
+      </div>
+
+      <div class="full-width">
+        <%= f.submit "日時選択へ進む", class: "confirm-button" %>
+      </div>
+
+      </div>
+    <% end %>
+  </div>
+</div>
