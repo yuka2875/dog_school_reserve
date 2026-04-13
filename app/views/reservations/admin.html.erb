@@ -1,102 +1,129 @@
 <div class="admin-layout">
-<%= render "shared/sidebar" %>
+  <%= render "shared/sidebar" %>
+
   <main class="admin-main">
 
-    <h1>ダッシュボード</h1>
-      <% if @pickup_addresses.present? %>
-      <% store_address = "〒812-0012 福岡県福岡市博多区博多駅中央街１−１" %>
-
-      <% route_url =
-        "https://www.google.com/maps/dir/" +
-        CGI.escape(store_address) + "/" +
-        @pickup_addresses.map { |a| CGI.escape(a) }.join("/") +
-        "/" +
-        CGI.escape(store_address)
-      %>
-
-  <div style="margin: 20px 0;">
-    <%= link_to "本日の送迎ルートを見る",
-      route_url,
-      target: "_blank",
-      class: "confirm-button" %>
-  </div>
-<% end %>
-    <p>予約と顧客の概要をご確認ください</p>
-
-    <div class="stats-grid">
-
-  <div class="stat-card">
-    <div class="stat-left">
-      <p class="stat-label">総顧客数</p>
-      <p class="stat-value">248</p>
-      <p class="stat-change">+12%</p>
+    <!-- ヘッダー -->
+    <div class="sns-header">
+      <h1>ダッシュボード</h1>
+      <p><%= Date.today.strftime("%Y年%m月%d日（%a）") %></p>
     </div>
-    <div class="stat-icon-circle">
-      <i class="bi bi-people"></i>
-    </div>
-  </div>
 
-  <div class="stat-card">
-    <div class="stat-left">
-      <p class="stat-label">今月の予約</p>
-      <p class="stat-value">87</p>
-      <p class="stat-change">+23%</p>
-    </div>
-    <div class="stat-icon-circle">
-      <i class="bi bi-calendar3"></i>
-    </div>
-  </div>
+    <!-- 上段カード -->
+    <div class="dashboard-grid">
 
-  <div class="stat-card">
-    <div class="stat-left">
-      <p class="stat-label">完了予約</p>
-      <p class="stat-value">156</p>
-      <p class="stat-change">+8%</p>
-    </div>
-    <div class="stat-icon-circle">
-      <i class="bi bi-check-circle"></i>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-left">
-      <p class="stat-label">売上（今月）</p>
-      <p class="stat-value">¥892,000</p>
-      <p class="stat-change">+15%</p>
-    </div>
-    <div class="stat-icon-circle">
-      <i class="bi bi-graph-up"></i>
-    </div>
-  </div>
-
-</div>
-
-<div class="recent-bookings">
-  <h2>最近の予約</h2>
-  <% @reservations.each do |r| %>
-    <% google_calendar_url =
-      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-      "&text=#{CGI.escape("#{r.dog_name}")}" +
-      "&dates=#{r.reserved_date.strftime('%Y%m%d')}T090000/#{r.reserved_date.strftime('%Y%m%d')}T100000" +
-      "&details=#{CGI.escape("飼い主: #{r.owner_name} / サービス: #{r.service_type}")}"
-    %>
-
-    <div class="booking-card">
-      <div>
-        <p class="booking-name"><%= r.dog_name %></p>
-        <p><%= r.reserved_date %> / <%= r.owner_name %></p>
+      <!-- 今日の予約 -->
+      <div class="dashboard-card stat">
+        <div class="stat-content">
+          <div>
+            <p class="stat-label">今日の予約件数</p>
+            <p class="stat-value"><%= @reservations.where(reserved_date: Date.today).count %></p>
+          </div>
+          <div class="icon-circle blue">
+            <i class="bi bi-calendar3"></i>
+          </div>
+        </div>
       </div>
 
-      <div class="booking-right">
-        <p><%= r.reserved_time %></p>
-        <%= link_to "Googleカレンダー追加",
-          google_calendar_url,
-          target: "_blank",
-          class: "status-badge confirmed" %>
+      <!-- 幼稚園 -->
+      <div class="dashboard-card stat">
+        <div class="stat-content">
+          <div>
+            <p class="stat-label">幼稚園</p>
+            <p class="stat-value">
+              <%= @reservations.where(reserved_date: Date.today, service_type: "kindergarten").count %>
+            </p>
+          </div>
+          <div class="icon-circle green">
+            <i class="bi bi-house"></i>
+          </div>
+        </div>
       </div>
-    </div>
-  <% end %>
-</div>
 
+      <!-- ホテル -->
+      <div class="dashboard-card stat">
+        <div class="stat-content">
+          <div>
+            <p class="stat-label">ホテル</p>
+            <p class="stat-value">
+              <%= @reservations.where(reserved_date: Date.today, service_type: "hotel").count %>
+            </p>
+          </div>
+          <div class="icon-circle purple">
+            <i class="bi bi-building"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 一時預かり -->
+      <div class="dashboard-card stat">
+        <div class="stat-content">
+          <div>
+            <p class="stat-label">一時預かり</p>
+            <p class="stat-value">
+              <%= @reservations.where(reserved_date: Date.today, service_type: "temporary_care").count %>
+            </p>
+          </div>
+          <div class="icon-circle orange">
+            <i class="bi bi-clock"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 中段 -->
+    <div class="dashboard-grid-2">
+
+      <!-- 送迎 -->
+      <div class="dashboard-card">
+        <h2>今日の送迎</h2>
+
+        <% if @pickup_addresses.present? %>
+          <% @pickup_addresses.each do |address| %>
+            <div class="pickup-row">
+              <span>📍</span>
+              <span><%= address %></span>
+            </div>
+          <% end %>
+
+          <% store_address = "〒812-0012 福岡県福岡市博多区博多駅中央街１−１" %>
+          <% route_url =
+            "https://www.google.com/maps/dir/" +
+            CGI.escape(store_address) + "/" +
+            @pickup_addresses.map { |a| CGI.escape(a) }.join("/") +
+            "/" +
+            CGI.escape(store_address)
+          %>
+
+          <%= link_to "送迎ルートを見る", route_url, target: "_blank", class: "sns-button" %>
+        <% else %>
+          <p>送迎予定なし</p>
+        <% end %>
+      </div>
+
+      <!-- スケジュール -->
+      <div class="dashboard-card">
+        <h2>今日のスケジュール</h2>
+
+        <div class="schedule-list">
+          <% @time_slots.each do |slot| %>
+            <div class="schedule-row <%= slot[:available] > 0 ? 'available' : 'full' %>">
+              <span class="time"><%= slot[:time] %></span>
+
+              <% if slot[:available] > 0 %>
+                <span class="status available">空きあり（<%= slot[:available] %>）</span>
+              <% else %>
+                <span class="status full">満席</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+
+    </div>
+
+    
   </main>
 </div>

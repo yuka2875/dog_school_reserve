@@ -1,0 +1,95 @@
+<div class="admin-layout">
+
+  <%= render "shared/sidebar" %>
+
+  <div class="admin-main new-customer-page">
+
+    <!-- 戻る -->
+    <div class="back-link">
+      <%= link_to :back do %>
+        ← 入力画面に戻る
+      <% end %>
+    </div>
+
+    <!-- タイトル -->
+    <div class="page-title">
+      <h1>予約内容の確認</h1>
+      <p>入力内容を確認してください</p>
+    </div>
+
+    <!-- カード -->
+    <div class="customer-form-card">
+
+      <h2>登録内容</h2>
+
+      <div class="review-confirm-list">
+
+        <div class="review-confirm-item">
+          <span>名前</span>
+          <p><%= @reservation.owner_name %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>電話番号</span>
+          <p><%= @reservation.phone_number %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>犬の名前</span>
+          <p><%= @reservation.dog_name %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>犬種</span>
+          <p><%= @reservation.dog_breed %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>サービス</span>
+          <p><%= @reservation.service_type %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>日付</span>
+          <p><%= @date %></p>
+        </div>
+
+        <div class="review-confirm-item">
+          <span>時間</span>
+          <p><%= @time %></p>
+        </div>
+
+      </div>
+
+      <!-- 送信 -->
+      <%= form_with url: admin_reservations_path, method: :post do %>
+
+        <%= hidden_field_tag "reservation[owner_name]", @reservation.owner_name %>
+        <%= hidden_field_tag "reservation[phone_number]", @reservation.phone_number %>
+        <%= hidden_field_tag "reservation[dog_name]", @reservation.dog_name %>
+        <%= hidden_field_tag "reservation[dog_breed]", @reservation.dog_breed %>
+        <%= hidden_field_tag "reservation[service_type]", @reservation.service_type %>
+        <%= hidden_field_tag :date, @date %>
+        <%= hidden_field_tag :time, @time %>
+
+        <div class="form-actions">
+          <%= submit_tag "予約を確定", class: "submit-btn" %>
+          <%= link_to "修正する", :back, class: "cancel-btn" %>
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <!-- 注意カード -->
+    <div class="hint-card review-hint-card">
+      <h3>確認事項</h3>
+      <ul>
+        <li>入力内容に間違いがないか確認してください</li>
+        <li>修正が必要な場合は戻ってください</li>
+        <li>確定すると予約が登録されます</li>
+      </ul>
+    </div>
+
+  </div>
+</div>

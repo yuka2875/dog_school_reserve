@@ -1,0 +1,2 @@
+module Admin::SnsPostsHelper
+end

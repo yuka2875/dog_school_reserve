@@ -1,0 +1,46 @@
+<table class="customers-table">
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th>顧客名</th>
+      <th>犬名</th>
+      <th>電話</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reservations.each do |r| %>
+      <tr>
+        <td>
+          <%= r.reserved_date %><br>
+          <%= r.reserved_time %>
+        </td>
+
+        <td class="customer-name">
+          <%= r.customer&.owner_name %>
+        </td>
+
+        <td><%= r.customer&.dog_name %></td>
+
+        <td>
+          <i class="bi bi-telephone"></i>
+          <%= r.customer&.phone_number %>
+        </td>
+
+        <td class="action-buttons">
+          <%= link_to "#", class: "icon-btn edit-btn" do %>
+            <i class="bi bi-pencil"></i>
+          <% end %>
+
+          <%= button_to "#",
+            method: :delete,
+            data: { confirm: "削除しますか？" },
+            class: "icon-btn delete-btn" do %>
+            <i class="bi bi-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

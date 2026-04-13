@@ -1,6 +1,6 @@
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h2 class="logo-text">管理</h2>
+    <h2 class="logo-text">管理者メニュー</h2>
 
     <button class="menu-toggle" onclick="toggleSidebar()">
       <i class="bi bi-list"></i>
@@ -18,9 +18,14 @@
       <span>顧客管理</span>
     </a>
 
-    <a href="#">
+    <a href="/admin/reservations/list" class="<%= 'active' if current_page?('/admin/reservations/list') %>">
       <i class="bi bi-calendar3"></i>
       <span>予約管理</span>
+    </a>
+
+    <a href="/admin/sns" class="<%= 'active' if current_page?('/admin/sns') %>">
+      <i class="bi bi-instagram"></i>
+      <span>SNS投稿</span>
     </a>
   </nav>
 </aside>

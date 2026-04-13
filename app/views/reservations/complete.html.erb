@@ -1,12 +1,29 @@
-<div class="confirm-page">
-  <div class="confirm-card">
-    <h2>予約完了</h2>
+<div class="complete-page">
 
-    <p>ご予約ありがとうございます。</p>
-    <p>予約が正常に完了しました。</p>
+  <div class="complete-card">
 
-    <%= link_to "トップへ戻る",
-      root_path,
-      class: "confirm-button" %>
+    <!-- アイコン -->
+    <div class="complete-icon">
+      <i class="fa-solid fa-check"></i>
+    </div>
+
+    <!-- タイトル -->
+    <h1>予約が完了しました</h1>
+    <p class="sub-text">ご予約ありがとうございます</p>
+
+    <!-- 予約番号 -->
+    <div class="reservation-number-box">
+      <span>予約番号</span>
+      <p>#RV<%= Date.today.strftime("%Y%m%d") %>-<%= rand(100..999) %></p>
+    </div>
+
+    
+
   </div>
+<!-- ボタン -->
+    <%= form_with url: root_path, method: :get do %>
+  <div class="submit-area">
+    <%= submit_tag "トップへ戻る", class: "confirm-button" %>
+  </div>
+<% end %>
 </div>

@@ -1,0 +1,177 @@
+<div class="admin-layout">
+
+  <%= render "shared/sidebar" %>
+
+  <div class="admin-main reservation-page new-customer-page">
+
+    <div class="back-link">
+      <%= link_to "/admin/reservations" do %>
+        <i class="bi bi-arrow-left"></i>
+        予約一覧に戻る
+      <% end %>
+    </div>
+
+    <div class="page-title">
+      <h1>新規予約追加</h1>
+      <p>新しい予約を登録します</p>
+    </div>
+
+    <%= form_with model: @reservation,
+        url: review_admin_reservations_path,
+        method: :post,
+        local: true do |f| %>
+
+      <div class="main-layout">
+
+        <!-- カレンダー -->
+        <div class="calendar-panel">
+          <div class="calendar-header">
+
+            <%= link_to "‹",
+              new_admin_reservation_path(
+                year: @prev_month.year,
+                month: @prev_month.month
+              ),
+              class: "month-arrow" %>
+
+            <h2><%= @selected_date.strftime("%Y年%-m月") %></h2>
+
+            <%= link_to "›",
+              new_admin_reservation_path(
+                year: @next_month.year,
+                month: @next_month.month
+              ),
+              class: "month-arrow" %>
+
+          </div>
+          <div class="calendar-grid">
+            <% @start_wday.times do %>
+              <div></div>
+            <% end %>
+
+            <% @days.each do |day| %>
+              <% date = Date.new(@selected_date.year, @selected_date.month, day) %>
+
+              <%= link_to new_admin_reservation_path(
+                year: date.year,
+                month: date.month,
+                day: day
+              ), class: "day-link" do %>
+
+                <div class="day <%= 'selected-day' if day == @selected_date.day %>">
+                  <%= day %>
+                </div>
+
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- 時間 -->
+        <div class="slots-panel">
+          <div class="slots-panel">
+
+          <h2>空き状況</h2>
+          <p><%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
+
+          <% @time_slots.each do |slot| %>
+
+            <%= link_to new_admin_reservation_path(
+              year: @selected_date.year,
+              month: @selected_date.month,
+              day: @selected_date.day,
+              time: slot[:time]
+            ), class: "slot-link" do %>
+
+              <div class="slot <%= 'selected-slot' if params[:time] == slot[:time] %>">
+
+                <div class="slot-content">
+                  <div class="slot-left">
+                    <%= slot[:time] %>
+                  </div>
+
+                  <div class="slot-right">
+                    <div class="slot-people">
+                      残り <%= slot[:available] %> / <%= slot[:total] %>
+                    </div>
+
+                    <% if slot[:available] == 0 %>
+                      <span class="badge full">満員</span>
+                    <% elsif slot[:available] <= 2 %>
+                      <span class="badge low">残りわずか</span>
+                    <% else %>
+                      <span class="badge ok">空きあり</span>
+                    <% end %>
+                  </div>
+                </div>
+
+              </div>
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+        </div>
+
+      </div>
+
+      <!-- フォームカード化 -->
+      <div class="customer-form-card">
+
+        <h2>予約情報</h2>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <%= f.label :owner_name, "名前 *" %>
+            <%= f.text_field :owner_name, placeholder: "山田 太郎" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :phone_number, "電話番号 *" %>
+            <%= f.text_field :phone_number, placeholder: "090-1234-5678" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :dog_name, "犬の名前" %>
+            <%= f.text_field :dog_name, placeholder: "ポチ" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :dog_breed, "犬種" %>
+            <%= f.text_field :dog_breed, placeholder: "チワワ" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :service_type, "サービス" %>
+            <%= f.select :service_type,
+              [
+                ["犬の幼稚園", "kindergarten"],
+                ["保育園", "nursery"],
+                ["ホテル", "hotel"],
+                ["一時預かり", "temporary_care"]
+              ],
+              {},
+              class: "form-select" %>
+          </div>
+
+        </div>
+
+        <%= hidden_field_tag :date, @selected_date %>
+        <%= hidden_field_tag :time, params[:time] %>
+
+        <div class="form-actions">
+          <%= f.submit "確認へ進む", class: "submit-btn" %>
+
+          <%= link_to "キャンセル",
+            "/admin/reservations",
+            class: "cancel-btn" %>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <!-- app/views/reservations/index.html.erb -->
 
 <div class="reservation-page">
-  <%= form_with url: reservations_complete_path, method: :post do |f| %>
+  <%= form_with url: reservations_confirm_path, method: :post, local: true, data: { turbo: false } do |f| %>
 
 
 
@@ -53,13 +53,26 @@
             day: day,
             reservation: @reservation_data
           ), class: "day-link" do %>
-            <div class="day <%= 'selected-day' if day == @selected_date.day %>">
+            <div class="day
+              <%= 'selected-day' if day == @selected_date.day %>
+              <%= 'today' if date == Date.today %>">
               <%= day %>
             </div>
           <% end %>
         <% end %>
       </div>
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <span class="legend-box today"></span>
+            本日
+          </div>
+          <div class="legend-item">
+            <span class="legend-box full"></span>
+            満席
+          </div>
+        </div>
     </div>
+    
 
     <!-- 空き状況 -->
     <div class="slots-panel">
@@ -71,7 +84,27 @@
 
         <% if disabled %>
           <div class="slot disabled">
-            <%= slot[:time] %> （<%= slot[:available] %>/<%= slot[:total] %>）
+            <div class="slot-content">
+              <div class="slot-left">
+                <i class="fa-regular fa-clock"></i>
+                <span><%= slot[:time] %></span>
+              </div>
+
+              <div class="slot-right">
+                <div class="slot-people">
+                  <i class="fa-solid fa-user"></i>
+                  <span><%= slot[:available] %>/<%= slot[:total] %></span>
+                </div>
+
+                <% if slot[:available] == 0 %>
+                  <span class="badge full">満席</span>
+                <% elsif slot[:available] == 1 %>
+                  <span class="badge low">残りわずか</span>
+                <% else %>
+                  <span class="badge ok">空きあり</span>
+                <% end %>
+              </div>
+            </div>
           </div>
         <% else %>
           <%= link_to reservations_index_path(
@@ -81,45 +114,52 @@
             time: slot[:time],
             reservation: @reservation_data
           ), class: "slot-link" do %>
+
             <div class="slot
-              <%= 'disabled' if disabled %>
-              <%= 'low-stock' if slot[:available] == 1 %>
               <%= 'selected-slot' if @selected_time == slot[:time] %>">
-              <%= slot[:time] %> 
-            （<%= slot[:available] %>/<%= slot[:total] %>）
+
+              <div class="slot-content">
+                <div class="slot-left">
+                  <i class="fa-regular fa-clock"></i>
+                  <span><%= slot[:time] %></span>
+                </div>
+
+                <div class="slot-right">
+                  <div class="slot-people">
+                    <i class="fa-solid fa-user"></i>
+                    <span><%= slot[:available] %>/<%= slot[:total] %></span>
+                  </div>
+
+                  <% if slot[:available] == 1 %>
+                    <span class="badge low">残りわずか</span>
+                  <% else %>
+                    <span class="badge ok">空きあり</span>
+                  <% end %>
+                </div>
+              </div>
+
             </div>
           <% end %>
         <% end %>
       <% end %>
+      
     </div>
+  
+  </div>
+  <div class="bottom-button">
+
+
+
+    <%= hidden_field_tag :date, @selected_date %>
+    <%= hidden_field_tag :time, @selected_time %>
+
+    <% @reservation_data.each do |k,v| %>
+      <%= hidden_field_tag "reservation[#{k}]", v %>
+    <% end %>
+
+    <%= f.submit "予約確認へ進む", class: "confirm-button" %>
 
   </div>
 
-  <!-- 下段 summary -->
-  <% if @selected_time.present? %>
-  <div class="summary-wrapper">
-    <div class="summary">
-      <h3>選択内容</h3>
-      <%= hidden_field_tag :date, @selected_date %>
-      <%= hidden_field_tag :time, @selected_time %>
-
-      <%= hidden_field_tag "reservation[owner_name]", @reservation_data["owner_name"] %>
-      <%= hidden_field_tag "reservation[phone_number]", @reservation_data["phone_number"] %>
-      <%= hidden_field_tag "reservation[dog_name]", @reservation_data["dog_name"] %>
-      <%= hidden_field_tag "reservation[dog_age]", @reservation_data["dog_age"] %>
-      <%= hidden_field_tag "reservation[dog_gender]", @reservation_data["dog_gender"] %>
-      <%= hidden_field_tag "reservation[dog_breed]", @reservation_data["dog_breed"] %>
-      <%= hidden_field_tag "reservation[service_type]", @reservation_data["service_type"] %>
-      <%= hidden_field_tag "reservation[referral_source]", @reservation_data["referral_source"] %>
-      <%= hidden_field_tag "reservation[address]", @reservation_data["address"] %>
-      <%= hidden_field_tag "reservation[pickup_required]", @reservation_data["pickup_required"] %>
-      <p>日付：<%= @selected_date.strftime("%Y年%-m月%-d日") %></p>
-      <p>時間：<%= @selected_time %></p>
-
-      <%= f.submit "この内容で予約を確定する", class: "confirm-button" %>
-    </div>
-  </div>
-<% end %>
-
-<% end %>
+  <% end %>
 </div>

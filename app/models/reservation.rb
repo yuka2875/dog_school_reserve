@@ -1,4 +1,5 @@
 class Reservation < ApplicationRecord
+  belongs_to :customer
   enum :service_type, {
     kindergarten: 0,
     nursery: 1,

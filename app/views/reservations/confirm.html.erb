@@ -1,65 +1,105 @@
 <div class="confirm-page">
+
   <div class="confirm-card">
-    <h2>ご予約者情報</h2>
 
-    <%= form_with url: reservations_complete_path, method: :get, class: "confirm-form" do |f| %>
-      <%= hidden_field_tag :date, @selected_date %>
-      <%= hidden_field_tag :time, @selected_time %>
+  <h2><i class="fa-regular fa-calendar"></i> ご予約内容</h2>
 
-      <div class="full-width reservation-info">
-        <p>日付：<%= @selected_date %></p>
-        <p>時間：<%= @selected_time %></p>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :owner_name, "①飼い主様のお名前" %>
-        <%= f.text_field :owner_name, placeholder: "山田 太郎" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :phone_number, "②電話番号" %>
-        <%= f.text_field :phone_number, placeholder: "090-1234-5678" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :dog_name, "③わんちゃんのお名前" %>
-        <%= f.text_field :dog_name, placeholder: "ポチ" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :dog_age, "④年齢" %>
-        <%= f.text_field :dog_age, placeholder: "3歳" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :dog_gender, "⑤性別" %>
-        <%= f.select :dog_gender, ["選択してください", "オス", "メス"] %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :dog_breed, "⑥犬種" %>
-        <%= f.text_field :dog_breed, placeholder: "トイプードル" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :service_type, "⑦希望サービス" %>
-        <%= f.select :service_type, [
-          ["選択してください", ""],
-          ["犬の幼稚園", "kindergarten"],
-          ["保育園", "nursery"],
-          ["ホテル", "hotel"],
-          ["一時預かり", "temporary_care"]
-        ] %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :referral_source, "⑨当店を知ったきっかけ" %>
-        <%= f.text_field :referral_source, placeholder: "Instagram" %>
-      </div>
-
-      <div class="full-width">
-        <%= f.submit "予約確定", class: "confirm-button" %>
-      </div>
-    <% end %>
+  <!-- 日付 -->
+  <div class="complete-box date-box">
+    <div class="label">
+      <i class="fa-regular fa-clock"></i> ご予約日時
+    </div>
+    <div class="value">
+      <%= @date %><br>
+      <span class="time"><%= @time %></span>
+    </div>
   </div>
+
+  <!-- サービス -->
+  <div class="complete-box service-box">
+    <div class="label">
+      <i class="fa-regular fa-clipboard"></i> ご利用サービス
+      </div>
+    <div class="value">
+      <%= @service_labels[@reservation_data["service_type"]] %>
+    </div>
+  </div>
+
+  <!-- 飼い主 -->
+  <div class="info-row">
+    <div>
+      <span><i class="fa-regular fa-user"></i> お名前</span>
+      <p><%= @reservation_data["owner_name"] %></p>
+    </div>
+    <div>
+      <span><i class="fa-solid fa-phone"></i> 電話番号</span>
+      <p><%= @reservation_data["phone_number"] %></p>
+    </div>
+  </div>
+
+  <!-- わんちゃん -->
+  <div class="info-row">
+    <div>
+      <span><i class="fa-solid fa-dog"></i> 名前</span>
+      <p><%= @reservation_data["dog_name"] %></p>
+    </div>
+    <div>
+      <span><i class="fa-solid fa-cake-candles"></i> 年齢</span>
+      <p><%= @reservation_data["dog_age"] %></p>
+    </div>
+  </div>
+
+  <div class="info-row">
+    <div>
+      <span><i class="fa-solid fa-venus-mars"></i> 性別</span>
+      <p><%= @reservation_data["dog_gender"] %></p>
+    </div>
+    <div>
+      <span><i class="fa-solid fa-paw"></i> 犬種</span>
+      <p><%= @reservation_data["dog_breed"] %></p>
+    </div>
+  </div>
+
+  <!-- その他 -->
+  <div class="info-row">
+    <div>
+      <span><i class="fa-solid fa-bullhorn"></i> 来店きっかけ</span>
+      <p><%= @reservation_data["referral_source"] %></p>
+    </div>
+    <div>
+      <span><i class="fa-solid fa-car"></i> 送迎</span>
+      <p><%= @reservation_data["pickup_required"] == "true" || @reservation_data["pickup_required"] == true ? "あり" : "なし" %></p>
+    </div>
+  </div>
+
+  <!-- 住所 -->
+  <div class="info-row">
+    <div style="width:100%">
+      <span><i class="fa-solid fa-location-dot"></i> 住所</span>
+      <p><%= @reservation_data["address"] %></p>
+    </div>
+  </div>
+
+  <!-- ボタン -->
+  <%= form_with url: reservations_complete_path, method: :post do %>
+
+    <%= hidden_field_tag :date, @date %>
+    <%= hidden_field_tag :time, @time %>
+
+    <% @reservation_data.each do |k,v| %>
+      <%= hidden_field_tag "reservation[#{k}]", v %>
+    <% end %>
+
+    <div class="submit-area">
+      <%= submit_tag "予約を確定する", class: "confirm-button" %>
+    </div>
+
+  <% end %>
+
+</div>
+
+    
+
+  </div>
+
 </div>

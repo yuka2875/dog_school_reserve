@@ -1,0 +1,131 @@
+<div class="admin-layout">
+  <%= render "shared/sidebar" %>
+
+  <main class="admin-main">
+
+    <div class="sns-header">
+      <h1>SNS投稿作成</h1>
+      <p>SNS用の投稿文を自動生成します</p>
+    </div>
+
+    <div class="sns-grid">
+
+      <!-- 入力 -->
+      <div class="sns-card">
+        <h2>投稿情報入力</h2>
+
+        <%= form_with url: admin_sns_generate_path, method: :post, data: { turbo: false } do %>
+
+          <!-- 店舗 -->
+          <div class="form-group">
+            <label>店舗名 <span class="required">*</span></label>
+            <select name="shop_name">
+              <option value="">選択してください</option>
+              <option value="福岡店" <%= "selected" if params[:shop_name] == "福岡店" %>>福岡店</option>
+              <option value="博多店" <%= "selected" if params[:shop_name] == "博多店" %>>博多店</option>
+              <option value="天神店" <%= "selected" if params[:shop_name] == "天神店" %>>天神店</option>
+            </select>
+          </div>
+
+          <!-- 犬 -->
+          <div class="form-group">
+            <label>犬の名前 <span class="required">*</span></label>
+            <input type="text" name="dog_name" value="<%= params[:dog_name] %>" placeholder="ポチ">
+          </div>
+
+          <!-- トーン -->
+          <div class="form-group">
+            <label>トーン <span class="required">*</span></label>
+            <select name="tone">
+              <option value="">選択してください</option>
+              <option value="cute" <%= "selected" if params[:tone] == "cute" %>>かわいい</option>
+              <option value="polite" <%= "selected" if params[:tone] == "polite" %>>丁寧</option>
+              <option value="sales" <%= "selected" if params[:tone] == "sales" %>>集客</option>
+            </select>
+          </div>
+
+          <!-- 投稿タイプ -->
+          <div class="form-group">
+            <label>投稿タイプ <span class="required">*</span></label>
+            <select name="post_type" id="post_type">
+              <option value="">選択してください</option>
+              <option value="normal" <%= "selected" if params[:post_type] == "normal" %>>通常投稿</option>
+              <option value="announcement" <%= "selected" if params[:post_type] == "announcement" %>>お知らせ</option>
+              <option value="best_shot" <%= "selected" if params[:post_type] == "best_shot" %>>ベストショット</option>
+            </select>
+          </div>
+
+          <!-- 日付 -->
+          <div class="form-group" id="date_wrap" style="display:none;">
+            <label>日付</label>
+            <div class="date-row">
+              <input type="number" id="month_input" name="month" value="<%= params[:month] %>" min="1" max="12">
+              <span class="date-sep">月</span>
+
+              <input type="number" id="day_input" name="day" value="<%= params[:day] %>" min="1" max="31">
+              <span class="date-sep">日</span>
+            </div>
+          </div>
+
+          <button class="sns-button">生成</button>
+
+        <% end %>
+      </div>
+
+      <!-- 出力 -->
+      <div class="sns-card">
+        <h2>生成された投稿文</h2>
+
+        <% if @caption.present? %>
+          <textarea readonly class="sns-textarea"><%= "#{@caption}\n\n\n#{@hashtags&.join(' ')}" %></textarea>
+
+          <button onclick="copyText()" class="sns-copy-btn">
+            コピー
+          </button>
+        <% else %>
+          <div class="sns-empty">
+            情報を入力して「生成」ボタンを押してください
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+
+    <!-- ヒント -->
+    <div class="sns-card sns-hint">
+      <h3>使い方のヒント</h3>
+      <ul>
+        <li>店舗名、犬の名前、トーン、投稿タイプを選択してください</li>
+        <li>「生成」ボタンで投稿文が作成されます</li>
+        <li>コピーしてそのままSNSに貼り付けできます</li>
+      </ul>
+    </div>
+
+  </main>
+</div>
+
+<script>
+document.addEventListener("turbo:load", function () {
+  const postType = document.getElementById("post_type");
+  const dateWrap = document.getElementById("date_wrap");
+
+  function toggle() {
+    if (postType && postType.value === "announcement") {
+      dateWrap.style.display = "block";
+    } else {
+      dateWrap.style.display = "none";
+    }
+  }
+
+  if (postType) {
+    postType.addEventListener("change", toggle);
+    toggle();
+  }
+});
+
+function copyText() {
+  const text = `<%= "#{@caption}\n\n\n#{@hashtags&.join(' ')}" %>`;
+  navigator.clipboard.writeText(text);
+  alert("コピーしました");
+}
+</script>

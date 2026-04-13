@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_083920) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_005643) do
   create_table "customers", force: :cascade do |t|
     t.string "address"
     t.datetime "created_at", null: false
@@ -26,6 +26,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_083920) do
   create_table "reservations", force: :cascade do |t|
     t.string "address"
     t.datetime "created_at", null: false
+    t.integer "customer_id"
     t.string "dog_age"
     t.string "dog_breed"
     t.string "dog_gender"
@@ -38,5 +39,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_083920) do
     t.string "reserved_time"
     t.integer "service_type"
     t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_reservations_on_customer_id"
   end
+
+  add_foreign_key "reservations", "customers"
 end

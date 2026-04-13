@@ -65,6 +65,32 @@ class ReservationsController < ApplicationController
       completed_bookings: 156,
       monthly_sales: "¥892,000"
     }
+    today = Date.today
+
+    slot_times = [
+      "09:00 - 10:00",
+      "10:00 - 11:00",
+      "11:00 - 12:00",
+      "13:00 - 14:00",
+      "14:00 - 15:00",
+      "15:00 - 16:00"
+    ]
+
+    @time_slots = slot_times.map do |slot_time|
+      booked_count = Reservation.where(
+        reserved_date: today,
+        reserved_time: slot_time
+      ).count
+
+      total = 6
+      available = total - booked_count
+
+      {
+        time: slot_time,
+        available: available,
+        total: total
+      }
+    end
   end
   def index
     @reservation = Reservation.new(reservation_params)
@@ -114,6 +140,16 @@ class ReservationsController < ApplicationController
 
 
   def confirm
+    @reservation_data = reservation_params.to_h
+    @date = params[:date]
+    @time = params[:time]
+
+    @service_labels = {
+    "kindergarten" => "犬の幼稚園",
+    "nursery" => "保育園",
+    "hotel" => "ホテル",
+    "temporary_care" => "一時預かり"
+  }
   end
 
   def complete
@@ -137,14 +173,18 @@ class ReservationsController < ApplicationController
     )
 
     Reservation.create!(
+      customer: customer, # ← これ絶対必要
+
       reserved_date: params[:date],
       reserved_time: params[:time],
+
       owner_name: data[:owner_name],
       phone_number: data[:phone_number],
       dog_name: data[:dog_name],
       dog_age: data[:dog_age],
       dog_gender: data[:dog_gender],
       dog_breed: data[:dog_breed],
+
       service_type: data[:service_type],
       referral_source: data[:referral_source],
       address: data[:address],
@@ -154,7 +194,84 @@ class ReservationsController < ApplicationController
     redirect_to reservations_complete_path
   end
 
+  def new
+    @reservation = Reservation.new
+    year = params[:year]&.to_i || Date.today.year
+    month = params[:month]&.to_i || Date.today.month
+    day = params[:day]&.to_i || Date.today.day
+
+    @selected_date = Date.new(year, month, day)
+
+    first_day = Date.new(year, month, 1)
+    @start_wday = first_day.wday
+
+    @days = (1..Date.new(year, month, -1).day).to_a
+
+    @prev_month = @selected_date.prev_month
+    @next_month = @selected_date.next_month
+
+    # 空き時間（仮）
+    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00" ]
+
+    slot_times = [
+      "09:00 - 10:00",
+      "10:00 - 11:00",
+      "11:00 - 12:00",
+      "13:00 - 14:00",
+      "14:00 - 15:00",
+      "15:00 - 16:00"
+    ]
+
+    @time_slots = slot_times.map do |slot_time|
+      booked_count = Reservation.where(
+        reserved_date: @selected_date,
+        reserved_time: slot_time
+      ).count
+
+      total = 6
+      available = total - booked_count
+
+      {
+        time: slot_time,
+        available: available,
+        total: total
+      }
+    end
+  end
+
+  def review
+    @reservation = Reservation.new(reservation_params)
+    @date = params[:date]
+    @time = params[:time]
+  end
+
+  def create
+    @reservation = Reservation.new(reservation_params)
+    @reservation.save
+    redirect_to admin_reservations_list_path(
+      view: "calendar",
+      date: @reservation.reserved_date
+    )
+  end
+
+  def list
+    @view = params[:view] || "list"
+
+    @reservations = Reservation.includes(:customer)
+    @reserved_dates = Reservation.pluck(:reserved_date).uniq
+
+    if params[:date].present?
+      selected_date = Date.parse(params[:date])
+      @daily_reservations = @reservations.where(reserved_date: selected_date)
+    else
+      @daily_reservations = []
+    end
+    @daily_reservations_grouped = @daily_reservations.group_by(&:service_type)
+    @reservation_counts = Reservation.group(:reserved_date).count
+  end
+
   private
+
 
   def reservation_params
     params.fetch(:reservation, {}).permit(
