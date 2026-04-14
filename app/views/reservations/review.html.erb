@@ -70,7 +70,7 @@
         <%= hidden_field_tag "reservation[dog_breed]", @reservation.dog_breed %>
         <%= hidden_field_tag "reservation[service_type]", @reservation.service_type %>
         <%= hidden_field_tag :date, @date %>
-        <%= hidden_field_tag :time, @time %>
+        <%= hidden_field_tag "reservation[reserved_time]", @time %>
 
         <div class="form-actions">
           <%= submit_tag "予約を確定", class: "submit-btn" %>

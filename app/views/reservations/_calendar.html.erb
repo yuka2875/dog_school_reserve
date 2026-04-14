@@ -3,73 +3,75 @@
   <% current_date = params[:date]&.to_date || Date.today %>
   <% prev_month = current_date.prev_month %>
   <% next_month = current_date.next_month %>
-  <% selected_date = params[:date]&.to_date %>
+  <% selected_date = params[:date]&.to_date || Date.today %>
   <% last_day = Date.new(current_date.year, current_date.month, -1).day %>
 
   <!-- ===================== -->
   <!-- 左：カレンダー -->
   <!-- ===================== -->
   <div class="calendar-box">
+    <div class="calendar-inner">
 
-    <div class="calendar-header">
-
-      <%= link_to admin_reservations_list_path(
-            view: "calendar",
-            date: prev_month.beginning_of_month
-          ),
-          data: { turbo: false } do %>
-        ‹
-      <% end %>
-
-      <h3><%= current_date.strftime("%Y年%-m月") %></h3>
-
-      <%= link_to admin_reservations_list_path(
-            view: "calendar",
-            date: next_month.beginning_of_month
-          ),
-          data: { turbo: false } do %>
-        ›
-      <% end %>
-
-    </div>
-
-    <div class="calendar-week">
-      <span>日</span>
-      <span>月</span>
-      <span>火</span>
-      <span>水</span>
-      <span>木</span>
-      <span>金</span>
-      <span>土</span>
-    </div>
-
-    <div class="admin-calendar-grid">
-      <% start_wday = Date.new(current_date.year, current_date.month, 1).wday %>
-
-      <% start_wday.times do %>
-        <div></div>
-      <% end %>
-
-      <% (1..last_day).each do |day| %>
-        <% date = Date.new(current_date.year, current_date.month, day) %>
-        <% has_reservation = @reserved_dates.include?(date) %>
-        <% count = @reservation_counts[date] || 0 %>
+      <div class="new-calendar-header">
 
         <%= link_to admin_reservations_list_path(
-          view: "calendar",
-          date: date
-        ),
-        class: "admin-calendar-day #{'selected' if selected_date == date} #{'has-event' if has_reservation}",
-        data: { turbo: false } do %>
-
-          <div class="day-number"><%= day %></div>
-
-          <% if count > 0 %>
-            <div class="day-count"><%= count %></div>
-          <% end %>
-
+              view: "calendar",
+              date: prev_month.beginning_of_month
+            ),
+            data: { turbo: false } do %>
+          ‹
         <% end %>
-      <% end %>
+
+        <h3><%= current_date.strftime("%Y年%-m月") %></h3>
+
+        <%= link_to admin_reservations_list_path(
+              view: "calendar",
+              date: next_month.beginning_of_month
+            ),
+            data: { turbo: false } do %>
+          ›
+        <% end %>
+
+      </div>
+
+      <div class="calendar-week">
+        <span>日</span>
+        <span>月</span>
+        <span>火</span>
+        <span>水</span>
+        <span>木</span>
+        <span>金</span>
+        <span>土</span>
+      </div>
+
+      <div class="admin-calendar-grid">
+        <% start_wday = Date.new(current_date.year, current_date.month, 1).wday %>
+
+        <% start_wday.times do %>
+          <div></div>
+        <% end %>
+
+        <% (1..last_day).each do |day| %>
+          <% date = Date.new(current_date.year, current_date.month, day) %>
+          <% has_reservation = @reserved_dates.map(&:to_date).include?(date) %>
+          <% count = @reservation_counts[date] || 0 %>
+
+          <%= link_to admin_reservations_list_path(
+            view: "calendar",
+            date: date
+          ),
+          class: "admin-calendar-day #{'selected' if selected_date == date} ",
+          data: { turbo: false } do %>
+
+            <div class="day-number"><%= day %></div>
+
+            <% if count > 0 %>
+              <div class="day-count"><%= count %></div>
+            <% end %>
+
+          <% end %>
+        <% end %>
+      </div>
     </div>
 
   </div>

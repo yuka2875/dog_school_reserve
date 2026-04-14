@@ -34,14 +34,17 @@
     </div>
 
     <!-- コンテンツ -->
-    <div class="reservations-card">
-
-      
+    <% if @view == "calendar" %>
       <turbo-frame id="main_view">
         <%= render @view %>
       </turbo-frame>
-
-    </div>
+    <% else %>
+      <div class="reservations-card">
+        <turbo-frame id="main_view">
+          <%= render @view %>
+        </turbo-frame>
+      </div>
+    <% end %>
 
   </main>
 

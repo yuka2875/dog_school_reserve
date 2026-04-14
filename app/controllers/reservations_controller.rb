@@ -67,28 +67,19 @@ class ReservationsController < ApplicationController
     }
     today = Date.today
 
-    slot_times = [
-      "09:00 - 10:00",
-      "10:00 - 11:00",
-      "11:00 - 12:00",
-      "13:00 - 14:00",
-      "14:00 - 15:00",
-      "15:00 - 16:00"
-    ]
+    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
 
-    @time_slots = slot_times.map do |slot_time|
+    @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
-        reserved_date: today,
-        reserved_time: slot_time
+        reserved_date: @selected_date,
+        reserved_time: time
       ).count
 
-      total = 6
-      available = total - booked_count
-
       {
-        time: slot_time,
-        available: available,
-        total: total
+        time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
+        value: time,
+        available: 6 - booked_count,
+        total: 6
       }
     end
   end
@@ -112,28 +103,19 @@ class ReservationsController < ApplicationController
 
     @selected_time = params[:time]
 
-    slot_times = [
-      "09:00 - 10:00",
-      "10:00 - 11:00",
-      "11:00 - 12:00",
-      "13:00 - 14:00",
-      "14:00 - 15:00",
-      "15:00 - 16:00"
-    ]
+    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
 
-    @time_slots = slot_times.map do |slot_time|
+    @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
         reserved_date: @selected_date,
-        reserved_time: slot_time
+        reserved_time: time
       ).count
 
-      total = 6
-      available = total - booked_count
-
       {
-        time: slot_time,
-        available: available,
-        total: total
+        time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
+        value: time,
+        available: 6 - booked_count,
+        total: 6
       }
     end
   end
@@ -173,7 +155,7 @@ class ReservationsController < ApplicationController
     )
 
     Reservation.create!(
-      customer: customer, # ← これ絶対必要
+      customer: customer,
 
       reserved_date: params[:date],
       reserved_time: params[:time],
@@ -210,31 +192,20 @@ class ReservationsController < ApplicationController
     @prev_month = @selected_date.prev_month
     @next_month = @selected_date.next_month
 
-    # 空き時間（仮）
-    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00" ]
+    # 空き時間
+    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
 
-    slot_times = [
-      "09:00 - 10:00",
-      "10:00 - 11:00",
-      "11:00 - 12:00",
-      "13:00 - 14:00",
-      "14:00 - 15:00",
-      "15:00 - 16:00"
-    ]
-
-    @time_slots = slot_times.map do |slot_time|
+    @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
         reserved_date: @selected_date,
-        reserved_time: slot_time
+        reserved_time: time
       ).count
 
-      total = 6
-      available = total - booked_count
-
       {
-        time: slot_time,
-        available: available,
-        total: total
+        time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
+        value: time,
+        available: 6 - booked_count,
+        total: 6
       }
     end
   end
@@ -242,7 +213,7 @@ class ReservationsController < ApplicationController
   def review
     @reservation = Reservation.new(reservation_params)
     @date = params[:date]
-    @time = params[:time]
+    @time = params[:reservation][:reserved_time]
   end
 
   def create
@@ -258,7 +229,7 @@ class ReservationsController < ApplicationController
     @view = params[:view] || "list"
 
     @reservations = Reservation.includes(:customer)
-    @reserved_dates = Reservation.pluck(:reserved_date).uniq
+    @reserved_dates = Reservation.pluck(:reserved_date).map(&:to_date).uniq
 
     if params[:date].present?
       selected_date = Date.parse(params[:date])
@@ -267,7 +238,7 @@ class ReservationsController < ApplicationController
       @daily_reservations = []
     end
     @daily_reservations_grouped = @daily_reservations.group_by(&:service_type)
-    @reservation_counts = Reservation.group(:reserved_date).count
+    @reservation_counts = Reservation.group(:reserved_date).count.transform_keys(&:to_date)
   end
 
   private

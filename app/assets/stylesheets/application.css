@@ -2,83 +2,6 @@
    予約画面専用
 ========================= */
 
-.reservation-page {
-  background: #eef3fb;
-  min-height: 100vh;
-  padding-bottom: 40px;
-}
-
-/* 上段 */
-.reservation-page .main-layout {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding: 24px 20px 0;
-  box-sizing: border-box;
-}
-
-/* 下段 */
-.reservation-page .summary-wrapper {
-  width: 100%;
-  max-width: 1240px;
-  margin: 24px auto 0;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-/* パネル */
-.reservation-page .calendar-panel,
-.reservation-page .slots-panel,
-.reservation-page .summary {
-  background: white;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  padding: 28px;
-}
-
-/* summary */
-.reservation-page .summary {
-  border: 2px solid #2563eb;
-  width: 100%;
-}
-
-.reservation-page .summary h3 {
-  margin: 0 0 16px;
-  font-size: 22px;
-}
-
-.reservation-page .summary p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.reservation-page .summary .confirm-button {
-  display: inline-block;
-  min-width: 220px;
-  padding: 14px 28px;
-  margin-top: 16px;
-  background: #2563eb;
-  color: white;
-  border-radius: 12px;
-  text-decoration: none;
-  text-align: center;
-}
-
-/* カレンダー */
-
-/* .day {
-  height: 48px;
-  border-radius: 14px;
-  background: #f8fafc;
-  font-size: 14px;
-  font-weight: 500;
-} */
-
 .day:hover {
   background: #e0f2fe;
 }
@@ -88,7 +11,7 @@
   color: white;
   font-weight: 700;
 } */
-.reservation-page .calendar-header {
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -116,72 +39,6 @@
 
 .calendar-header a:hover {
   background: #e6f4f3;
-}
-
-.reservation-page .month-arrow {
-  text-decoration: none;
-  font-size: 24px;
-  color: #111827;
-}
-
-.reservation-page .weekday-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  margin-bottom: 12px;
-  color: #64748b;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.reservation-page .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-}
-
-.reservation-page .day-link {
-  text-decoration: none;
-}
-
-.reservation-page .day {
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: black;
-  font-size: 14px;
-}
-
-.reservation-page .selected-day {
-  background: #2563eb;
-  color: white;
-}
-
-/* 空き枠 */
-.reservation-page .slot-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.reservation-page .slot {
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  background: white;
-  font-size: 14px;
-}
-
-.reservation-page .selected-slot {
-  border: 2px solid #2563eb;
-  background: #eff6ff;
-}
-
-.reservation-page .disabled {
-  color: #ccc;
 }
 
 /* =========================
@@ -331,6 +188,9 @@ body {
   font-size: 16px;
   color: #5a7878;
   margin: 0 0 24px 0;
+}
+.admin-main.new-customer-page {
+  background: #f5fbfb;
 }
 
 /* =========================
@@ -1263,9 +1123,9 @@ textarea {
   width: 360px;
   padding: 24px;
   border-radius: 24px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #edf4f4;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06); /* ←完全統一 */
 }
 
 /* 右カード */
@@ -1281,7 +1141,8 @@ textarea {
   background: #ffffff;
   border-radius: 24px;
   padding: 28px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #edf4f4;
 }
 
 .admin-calendar-grid {
@@ -1294,17 +1155,10 @@ textarea {
 .admin-calendar-day {
   width: 42px;
   height: 42px;
-  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.admin-calendar-day:hover {
-  background: #e6f4f3;
+  border-radius: 999px;
 }
 
 .calendar-detail h3 {
@@ -1356,25 +1210,9 @@ textarea {
 } */
 
 .admin-calendar-day.selected {
-  background: #14b8a6;
-  color: white;
+  background: #5fb3b3;
+  color: #ffffff;
   font-weight: 600;
-}
-
-.admin-calendar-day.has-event {
-  position: relative;
-}
-
-.admin-calendar-day.has-event::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: #14b8a6;
-  border-radius: 50%;
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .service-group {
@@ -1497,13 +1335,8 @@ textarea {
   max-width: 1000px;
 }
 
-/* 上のカレンダー余白調整 */
-.reservation-page .main-layout {
-  margin-bottom: 24px;
-}
-
 /* 下のフォームカード位置 */
-.reservation-page .customer-form-card {
+.customer-form-card {
   max-width: 800px;
   margin: 0 auto;
 }
@@ -1930,4 +1763,317 @@ textarea {
   padding: 24px 28px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
   border: 1px solid #edf4f4;
+}
+
+.calendar-inner {
+  border: 1px solid #e3eeee;
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.calendar-week span {
+  font-size: 12px;
+  color: #7a8c8c;
+}
+.new-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.new-calendar-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f2c3f;
+}
+
+.new-calendar-header .month-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #f3f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5c7878;
+  text-decoration: none;
+}
+
+.new-calendar-panel {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.reservation-page {
+  background: #eef3fb;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+.reservation-page .main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.reservation-page .calendar-panel,
+.reservation-page .slots-panel {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+.reservation-page .calendar-panel {
+  padding: 20px; /* 24 → 20 */
+}
+
+.reservation-page .day {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #374151;
+}
+.reservation-page .day:hover {
+  background: #e0f2fe;
+}
+.reservation-page .selected-day {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  transform: scale(1.1);
+}
+
+.reservation-page .today {
+  border: 2px solid #2563eb;
+}
+
+.reservation-page .slot {
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.reservation-page .slot:hover {
+  border-color: #2563eb;
+  background: #f8fbff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.reservation-page .selected-slot {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+}
+.reservation-page .slot.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.reservation-page .slot-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.reservation-page .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+.reservation-page .weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #9ca3af;
+}
+.reservation-page .slots-panel h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #111827;
+}
+
+.reservation-page .slots-panel p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+.reservation-page .bottom-button {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+.reservation-page .confirm-button {
+  width: 100%;
+  max-width: 600px;
+  height: 56px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.reservation-page .confirm-button:hover {
+  background: #1d4ed8;
+}
+
+.reservation-page .day-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.admin-reservation-page .admin-date-time-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-reservation-page .form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.admin-reservation-page .form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-reservation-page .form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.admin-reservation-page .input-field {
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: #f3f4f6;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.admin-reservation-page .admin-time-list {
+  background: transparent;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.admin-reservation-page .admin-time-list label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+.admin-reservation-page .time-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #f9fafb;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.admin-reservation-page .time-item input {
+  accent-color: #2563eb;
+}
+
+.admin-reservation-page .time-item input[type="radio"] {
+  display: none;
+}
+
+.admin-reservation-page .time-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.admin-reservation-page .time-text {
+  font-weight: 500;
+}
+
+.admin-reservation-page .time-meta {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.admin-reservation-page .time-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-reservation-page .time-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-reservation-page .time-item:hover {
+  border-color: #2563eb;
+  background: #f0f7ff;
+}
+
+.admin-reservation-page .time-item input:checked + .time-content {
+  background: #2563eb;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.admin-reservation-page .time-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.admin-reservation-page .admin-reservation-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.admin-reservation-page .admin-date-time-card,
+.admin-reservation-page .customer-form-card {
+  width: 100%;
+  padding: 24px;
+}
+.admin-reservation-page .admin-date-time-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
