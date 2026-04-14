@@ -10,10 +10,8 @@
       <div class="header-left">
         <h1>予約管理</h1>
         <p>予約の管理と閲覧</p>
-      </div>
 
-      <div class="header-right">
-
+        <!-- トグルはここ -->
         <div class="view-toggle">
           <%= link_to "リスト表示",
             admin_reservations_list_path(view: "list"),
@@ -23,21 +21,26 @@
             admin_reservations_list_path(view: "calendar"),
             class: "toggle-btn #{'active' if @view == 'calendar'}" %>
         </div>
+      </div>
 
+      <!-- 右はボタンだけ -->
+      <div class="header-right">
         <%= link_to new_admin_reservation_path,
           class: "add-customer-btn" do %>
           ＋ 新規予約追加
         <% end %>
-
       </div>
 
-    </div> <!-- ←ここで完全に閉じる -->
+    </div>
 
     <!-- コンテンツ -->
-    <div class="customers-card">
+    <div class="reservations-card">
+
+      
       <turbo-frame id="main_view">
         <%= render @view %>
       </turbo-frame>
+
     </div>
 
   </main>

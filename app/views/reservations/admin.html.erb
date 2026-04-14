@@ -12,118 +12,181 @@
     <!-- 上段カード -->
     <div class="dashboard-grid">
 
-      <!-- 今日の予約 -->
-      <div class="dashboard-card stat">
-        <div class="stat-content">
-          <div>
-            <p class="stat-label">今日の予約件数</p>
-            <p class="stat-value"><%= @reservations.where(reserved_date: Date.today).count %></p>
-          </div>
-          <div class="icon-circle blue">
-            <i class="bi bi-calendar3"></i>
-          </div>
-        </div>
+  <!-- 今日の予約 -->
+  <div class="dashboard-card stat">
+    <div class="stat-content">
+      <div>
+        <p class="stat-label">今日の予約件数</p>
+        <p class="stat-value"><%= @reservations.where(reserved_date: Date.today).count %></p>
       </div>
-
-      <!-- 幼稚園 -->
-      <div class="dashboard-card stat">
-        <div class="stat-content">
-          <div>
-            <p class="stat-label">幼稚園</p>
-            <p class="stat-value">
-              <%= @reservations.where(reserved_date: Date.today, service_type: "kindergarten").count %>
-            </p>
-          </div>
-          <div class="icon-circle green">
-            <i class="bi bi-house"></i>
-          </div>
-        </div>
+      <div class="icon-circle blue">
+        <i class="bi bi-calendar3"></i>
       </div>
-
-      <!-- ホテル -->
-      <div class="dashboard-card stat">
-        <div class="stat-content">
-          <div>
-            <p class="stat-label">ホテル</p>
-            <p class="stat-value">
-              <%= @reservations.where(reserved_date: Date.today, service_type: "hotel").count %>
-            </p>
-          </div>
-          <div class="icon-circle purple">
-            <i class="bi bi-building"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- 一時預かり -->
-      <div class="dashboard-card stat">
-        <div class="stat-content">
-          <div>
-            <p class="stat-label">一時預かり</p>
-            <p class="stat-value">
-              <%= @reservations.where(reserved_date: Date.today, service_type: "temporary_care").count %>
-            </p>
-          </div>
-          <div class="icon-circle orange">
-            <i class="bi bi-clock"></i>
-          </div>
-        </div>
-      </div>
-
     </div>
+  </div>
+
+  <!-- 幼稚園 -->
+  <div class="dashboard-card stat">
+    <div class="stat-content">
+      <div>
+        <p class="stat-label">幼稚園</p>
+        <p class="stat-value">
+          <%= @reservations.where(reserved_date: Date.today, service_type: "kindergarten").count %>
+        </p>
+      </div>
+      <div class="icon-circle green">
+        <i class="bi bi-house"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- 保育園（追加） -->
+  <div class="dashboard-card stat">
+    <div class="stat-content">
+      <div>
+        <p class="stat-label">保育園</p>
+        <p class="stat-value">
+          <%= @reservations.where(reserved_date: Date.today, service_type: "nursery").count %>
+        </p>
+      </div>
+      <div class="icon-circle teal">
+        <i class="bi bi-stars"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- ホテル -->
+  <div class="dashboard-card stat">
+    <div class="stat-content">
+      <div>
+        <p class="stat-label">ホテル</p>
+        <p class="stat-value">
+          <%= @reservations.where(reserved_date: Date.today, service_type: "hotel").count %>
+        </p>
+      </div>
+      <div class="icon-circle purple">
+        <i class="bi bi-building"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一時預かり -->
+  <div class="dashboard-card stat">
+    <div class="stat-content">
+      <div>
+        <p class="stat-label">一時預かり</p>
+        <p class="stat-value">
+          <%= @reservations.where(reserved_date: Date.today, service_type: "temporary_care").count %>
+        </p>
+      </div>
+      <div class="icon-circle orange">
+        <i class="bi bi-clock"></i>
+      </div>
+    </div>
+  </div>
+
+</div>
 
     <!-- 中段 -->
     <div class="dashboard-grid-2">
 
       <!-- 送迎 -->
       <div class="dashboard-card">
-        <h2>今日の送迎</h2>
 
-        <% if @pickup_addresses.present? %>
-          <% @pickup_addresses.each do |address| %>
-            <div class="pickup-row">
-              <span>📍</span>
-              <span><%= address %></span>
-            </div>
+        <div class="card-header">
+          <h2>
+            <i class="bi bi-geo-alt"></i>
+            今日の送迎
+          </h2>
+
+          <% if @pickup_addresses.present? %>
+            <% store_address = "〒812-0012 福岡県福岡市博多区博多駅中央街１−１" %>
+
+            <% route_url =
+              "https://www.google.com/maps/dir/" +
+              CGI.escape(store_address) + "/" +
+              @pickup_addresses.map { |a| CGI.escape(a) }.join("/") +
+              "/" +
+              CGI.escape(store_address)
+            %>
+
+            <%= link_to "送迎ルートを見る",
+              route_url,
+              target: "_blank",
+              class: "route-btn" %>
           <% end %>
+        </div>
 
-          <% store_address = "〒812-0012 福岡県福岡市博多区博多駅中央街１−１" %>
-          <% route_url =
-            "https://www.google.com/maps/dir/" +
-            CGI.escape(store_address) + "/" +
-            @pickup_addresses.map { |a| CGI.escape(a) }.join("/") +
-            "/" +
-            CGI.escape(store_address)
-          %>
+        <% @reservations.where(reserved_date: Date.today, pickup_required: [true, "true"]).each do |r| %>
+          <div class="pickup-item">
+            <i class="bi bi-geo-fill"></i>
 
-          <%= link_to "送迎ルートを見る", route_url, target: "_blank", class: "sns-button" %>
-        <% else %>
-          <p>送迎予定なし</p>
+            <div class="pickup-info">
+              <p class="dog-owner">
+                <strong><%= r.dog_name %></strong>
+                （<%= r.owner_name %>様）
+              </p>
+              <p class="address"><%= r.address %></p>
+            </div>
+          </div>
         <% end %>
+
       </div>
 
-      <!-- スケジュール -->
       <div class="dashboard-card">
-        <h2>今日のスケジュール</h2>
+  <h2>
+    <i class="bi bi-clock"></i>
+    最近の予約
+  </h2>
 
-        <div class="schedule-list">
-          <% @time_slots.each do |slot| %>
-            <div class="schedule-row <%= slot[:available] > 0 ? 'available' : 'full' %>">
-              <span class="time"><%= slot[:time] %></span>
+    <% @reservations.limit(5).each do |r| %>
 
-              <% if slot[:available] > 0 %>
-                <span class="status available">空きあり（<%= slot[:available] %>）</span>
-              <% else %>
-                <span class="status full">満席</span>
-              <% end %>
-            </div>
-          <% end %>
+      <% service_label = {
+        "kindergarten" => "幼稚園",
+        "nursery" => "保育園",
+        "hotel" => "ホテル",
+        "temporary_care" => "一時預かり"
+      }[r.service_type] %>
+
+      <% start_time = "#{r.reserved_date.strftime('%Y%m%d')}T#{r.reserved_time.delete(':')}00" %>
+      <% end_time = (Time.parse(r.reserved_time) + 1.hour).strftime('%H%M%S') %>
+      <% end_time_full = "#{r.reserved_date.strftime('%Y%m%d')}T#{end_time}" %>
+
+      <% google_calendar_url =
+        "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+        "&text=#{CGI.escape("#{r.dog_name}（#{r.owner_name}様）")}" +
+        "&dates=#{start_time}/#{end_time_full}" +
+        "&details=#{CGI.escape("サービス：#{service_label}\n住所：#{r.address}")}"
+      %>
+
+      <div class="booking-card">
+
+        <!-- 左 -->
+        <div class="booking-left">
+
+          <i class="bi bi-calendar-check booking-icon"></i>
+
+          <span class="booking-one-line">
+            <strong><%= r.dog_name %></strong>
+            （<%= r.owner_name %>様）
+            ｜<%= r.reserved_date %> <%= r.reserved_time %>
+          </span>
+
+        </div>
+
+        <!-- 右 -->
+        <div class="booking-one-line">
+          <%= link_to "Googleカレンダーに追加",
+            google_calendar_url,
+            target: "_blank",
+            class: "calendar-btn" %>
         </div>
 
       </div>
 
+    <% end %>
+  </div>
     </div>
 
-    
   </main>
 </div>

@@ -95,6 +95,29 @@
   margin-bottom: 24px;
 }
 
+.calendar-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f2c3f;
+}
+
+.calendar-header a {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #f3f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5c7878;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.calendar-header a:hover {
+  background: #e6f4f3;
+}
+
 .reservation-page .month-arrow {
   text-decoration: none;
   font-size: 24px;
@@ -383,16 +406,6 @@ body {
   margin-bottom: 18px;
 }
 
-.booking-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 18px;
-  margin-bottom: 12px;
-  background: #eef7f7;
-  border-radius: 18px;
-}
-
 .booking-name {
   font-size: 18px;
   font-weight: 700;
@@ -417,15 +430,22 @@ body {
 
 .status-badge {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
 }
 
+/* 確定 */
 .status-badge.confirmed {
-  background: #d9f4f2;
-  color: #5dbebd;
+  background: #e6f9f8;
+  color: #14b8a6;
+}
+
+/* 未確定など（将来用） */
+.status-badge.pending {
+  background: #fff4e6;
+  color: #f97316;
 }
 
 .status-badge.pending {
@@ -646,7 +666,7 @@ body {
 
 .customers-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
   gap: 20px;
@@ -670,11 +690,11 @@ body {
   background: #5dbebd;
   color: white;
   border: none;
-  padding: 14px 22px;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 700;
-  box-shadow: 0 6px 16px rgba(93, 190, 189, 0.25);
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -685,70 +705,76 @@ body {
   opacity: 0.95;
 }
 
-/* .customers-card {
-  background: white;
-  border-radius: 28px;
-  padding: 28px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-} */
-
 .customer-name {
   font-size: 16px;
   font-weight: 700;
   color: #0f2c3f;
 }
 
+.customer-name .cell-with-icon {
+  gap: 10px;
+}
+
+.customers-table tr {
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
 .customers-table tr:hover {
-  background: #f7fcfc;
+  background: #f3fbfb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
 }
-
-.customers-table td {
-  vertical-align: middle;
-}
-
-/* .search-bar input {
-  width: 100%;
-  height: 58px;
-  border: none;
-  background: #f9fcfc;
-  border-radius: 18px;
-  padding: 0 20px;
-  font-size: 16px;
-  color: #567575;
-  box-sizing: border-box;
-} */
 
 .search-bar {
-  margin-bottom: 24px;
+  width: 100%;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.search-bar i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7a9a9a;
 }
 
 .search-bar input {
   width: 100%;
-  padding: 14px 18px;
-  border: 1px solid #dceaea;
-  border-radius: 14px;
+  box-sizing: border-box;
+  height: 48px;
+  background: #f5f7f7;
+  border: none;
+  border-radius: 16px;
+  padding: 0 16px 0 40px;
   font-size: 14px;
 }
 
 .customers-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 8px;
 }
 
 .customers-table th {
-  font-size: 15px;
-  font-weight: 700;
-  color: #234444;
-  padding: 20px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8aa5a5;
+  padding: 12px 16px;
   text-align: left;
 }
 
 .customers-table td {
   font-size: 15px;
   color: #5c7878;
-  padding: 22px 16px;
   border-top: 1px solid #edf4f4;
   text-align: left;
+  border: none;
+  padding: 22px 16px;
 }
 
 .customers-table th:last-child,
@@ -777,22 +803,30 @@ body {
 }
 
 .icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f4f8f8;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .edit-btn {
   color: #5dbebd;
+}
+.edit-btn:hover {
+  background: #e6f4f3;
 }
 
 .delete-btn {
   color: #e05b5b;
   border: none;
   background: transparent;
+}
+.delete-btn:hover {
+  background: #fdecec;
 }
 
 .icon-btn:hover {
@@ -1220,26 +1254,34 @@ textarea {
 
 .calendar-layout {
   display: flex;
-  gap: 24px;
+  gap: 28px;
+  margin-top: 8px;
+  align-items: stretch;
 }
 
 .calendar-box {
-  width: 300px;
-  padding: 16px;
-  border-radius: 20px;
+  width: 360px;
+  padding: 24px;
+  border-radius: 24px;
   background: white;
-  border: 1px solid #e5e7eb; /* ←これ追加 */
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* 右カード */
 .calendar-detail {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
   flex: 1;
+  min-height: 500px;
 
-  /* ←これ追加 */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .admin-calendar-grid {
@@ -1250,15 +1292,15 @@ textarea {
 }
 
 .admin-calendar-day {
-  width: 36px;
-  height: 36px;
-  border-radius: 999px; /* ←完全な丸 */
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
-  position: relative;
+  transition: all 0.2s ease;
 }
 
 .admin-calendar-day:hover {
@@ -1266,9 +1308,11 @@ textarea {
 }
 
 .calendar-detail h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f2c3f;
+  letter-spacing: -0.3px;
 }
 
 /* .booking-item {
@@ -1286,16 +1330,18 @@ textarea {
   background: #f1f5f9;
 }
 
-/* .booking-left {
+.booking-left {
   display: flex;
   align-items: center;
-  gap: 12px;
-} */
+  height: 100%;
+  gap: 8px;
+}
 
-/* .booking-time {
-  font-weight: bold;
-  font-size: 16px;
-} */
+.booking-time {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
 
 .booking-name {
   font-size: 14px;
@@ -1307,14 +1353,6 @@ textarea {
 
 /* .booking-price {
   font-weight: 600;
-} */
-
-/* .status-badge {
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #0284c7;
 } */
 
 .admin-calendar-day.selected {
@@ -1344,37 +1382,57 @@ textarea {
 }
 
 .service-header {
-  font-weight: 600;
-  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 6px 4px;
+  font-size: 13px;
+  color: #7a9a9a;
+  font-weight: 600;
+}
+
+.service-header span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .booking-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #e6f4f3;
   padding: 16px;
   border-radius: 16px;
-  margin-bottom: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  gap: 16px;
+}
+
+.booking-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
 }
 
 .time-box {
-  background: #cdebea;
-  padding: 12px;
+  background: #e6f7f6;
+  padding: 10px 12px;
   border-radius: 12px;
-  min-width: 70px;
+  min-width: 64px;
   text-align: center;
 }
 
 .time {
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f2c3f;
 }
 
 .booking-info {
-  flex: 1;
-  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .booking-meta {
@@ -1398,36 +1456,40 @@ textarea {
 }
 
 .view-toggle {
-  display: inline-flex;
-  background: #e6f0ef;
+  background: #f3f7f7;
   border-radius: 999px;
   padding: 4px;
+  display: inline-flex;
+  margin-right: 8px;
 }
 
 .toggle-btn {
   padding: 6px 14px;
   border-radius: 999px;
   text-decoration: none;
-  color: #555;
-  font-size: 14px;
+  color: #7a9a9a;
+  font-size: 13px;
+  transition: all 0.2s;
 }
 
 .toggle-btn.active {
-  background: white;
+  background: #ffffff;
   color: #14b8a6;
   font-weight: 600;
 }
 
 .customers-card {
   background: transparent;
-  box-shadow: none;
+  border-radius: 24px;
   padding: 0;
+  box-shadow: none;
+  margin-top: 16px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 32px;
 }
 
 /* 予約フォーム専用調整 */
@@ -1580,7 +1642,7 @@ textarea {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   margin-bottom: 24px;
 }
@@ -1589,7 +1651,6 @@ textarea {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 24px;
 }
 
 .dashboard-card {
@@ -1686,4 +1747,187 @@ textarea {
 .icon-circle.orange {
   background: #fff4e6;
   color: #f97316;
+}
+
+.icon-circle.teal {
+  background: #e6fffa;
+  color: #14b8a6;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.route-btn {
+  background: #5bc0be;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.pickup-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  margin-bottom: 10px;
+}
+
+.pickup-left {
+  font-size: 18px;
+  color: #ff6b6b;
+}
+
+.pickup-info .dog-name {
+  font-weight: bold;
+}
+
+.pickup-info .dog-owner {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pickup-info .address {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.pickup-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.pickup-text strong {
+  font-weight: 600;
+}
+
+.pickup-item i {
+  color: #ff5a5f;
+  font-size: 18px;
+}
+.calendar-btn {
+  background: #5bc0be;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.booking-one-line {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 14px;
+  color: #5a7878;
+}
+
+.booking-one-line strong {
+  font-weight: 600;
+}
+
+.booking-icon {
+  color: #5bc0be;
+  font-size: 16px;
+}
+
+.reservation-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #5c7878;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.reservation-filter i {
+  color: #7a9a9a;
+}
+
+.cell-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cell-with-icon i {
+  color: #7a9a9a;
+  font-size: 14px;
+}
+
+.reservation-datetime {
+  display: flex;
+  flex-direction: column;
+}
+
+.reservation-date {
+  font-size: 12px;
+  color: #8aa5a5;
+}
+
+.reservation-time {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f2c3f;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 予約一覧専用 */
+.reservations-table {
+  width: 100%;
+  border-collapse: collapse; /* ←これが本質 */
+  margin-top: 8px;
+}
+
+.reservations-table th {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8aa5a5;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.reservations-table td {
+  font-size: 15px;
+  color: #5c7878;
+  padding: 20px 16px;
+  border-bottom: 1px solid #edf4f4; /* ←Figmaの線 */
+}
+
+.reservations-table tr {
+  background: transparent; /* ←カード解除 */
+}
+
+.reservations-table tr:hover {
+  background: #f7fbfb;
+  transform: none;
+  box-shadow: none;
+}
+
+.reservations-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #edf4f4;
+}
+
+.customers-page-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #edf4f4;
 }

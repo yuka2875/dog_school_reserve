@@ -15,16 +15,11 @@
     <% end %>
   </div>
 
-  <div class="customers-card">
+  <div class="customers-page-card">
     <div class="search-bar">
-      <%= form_with url: "/admin/customers",
-        method: :get,
-        local: true do %>
-
-      <%= text_field_tag :search,
-        params[:search],
-        placeholder: "名前、電話番号で検索..." %>
-      <% end %>
+      <i class="bi bi-search"></i>
+      <%= text_field_tag :search, params[:search],
+        placeholder: "名前、メール、電話番号で検索..." %>
     </div>
 
     <table class="customers-table">

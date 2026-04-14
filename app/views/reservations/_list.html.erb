@@ -1,4 +1,4 @@
-<table class="customers-table">
+<table class="reservations-table">
   <thead>
     <tr>
       <th>日時</th>
@@ -13,19 +13,31 @@
     <% @reservations.each do |r| %>
       <tr>
         <td>
-          <%= r.reserved_date %><br>
-          <%= r.reserved_time %>
+          <div class="reservation-datetime">
+            <span class="reservation-date"><%= r.reserved_date %></span>
+            <span class="reservation-time"><%= r.reserved_time %></span>
+          </div>
         </td>
 
         <td class="customer-name">
-          <%= r.customer&.owner_name %>
+          <div class="cell-with-icon">
+            <i class="bi bi-person"></i>
+            <%= r.customer&.owner_name %>
+          </div>
         </td>
 
-        <td><%= r.customer&.dog_name %></td>
+        <td>
+          <div class="cell-with-icon">
+            <i class="bi bi-heart"></i>
+            <%= r.customer&.dog_name %>
+          </div>
+        </td>
 
         <td>
-          <i class="bi bi-telephone"></i>
-          <%= r.customer&.phone_number %>
+          <div class="cell-with-icon">
+            <i class="bi bi-telephone"></i>
+            <%= r.customer&.phone_number %>
+          </div>
         </td>
 
         <td class="action-buttons">
