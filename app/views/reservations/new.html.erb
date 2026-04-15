@@ -67,23 +67,14 @@
           <div class="form-grid">
 
             <div class="form-group">
-              <%= f.label :owner_name, "名前 *" %>
-              <%= f.text_field :owner_name, placeholder: "山田 太郎" %>
-            </div>
+              <%= f.label :customer_id, "顧客 *" %>
 
-            <div class="form-group">
-              <%= f.label :phone_number, "電話番号 *" %>
-              <%= f.text_field :phone_number, placeholder: "090-1234-5678" %>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :dog_name, "犬の名前" %>
-              <%= f.text_field :dog_name, placeholder: "ポチ" %>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :dog_breed, "犬種" %>
-              <%= f.text_field :dog_breed, placeholder: "チワワ" %>
+              <%= f.collection_select :customer_id,
+                Customer.all,
+                :id,
+                :owner_name,
+                { prompt: "顧客を選択してください" },
+                class: "form-select" %>
             </div>
 
             <div class="form-group">

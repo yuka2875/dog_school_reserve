@@ -214,20 +214,14 @@ class ReservationsController < ApplicationController
 
   def review
     @reservation = Reservation.new(reservation_params)
+    Rails.logger.debug @reservation.customer_id
     @date = @reservation.reserved_date
     @time = @reservation.reserved_time
+    @customer = Customer.find(@reservation.customer_id)
   end
 
   def create
-    data = reservation_params
-
-    customer = Customer.find_or_create_by(
-      owner_name: data[:owner_name],
-      phone_number: data[:phone_number]
-    )
-
-    @reservation = Reservation.new(data)
-    @reservation.customer = customer
+  @reservation = Reservation.new(reservation_params)
 
     if @reservation.save
       redirect_to admin_reservations_list_path(
@@ -298,7 +292,8 @@ class ReservationsController < ApplicationController
       :address,
       :pickup_required,
       :reserved_date,
-      :reserved_time
+      :reserved_time,
+      :customer_id
     )
   end
 

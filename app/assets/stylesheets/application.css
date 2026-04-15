@@ -367,7 +367,7 @@ body {
 }
 
 .form-group .form-select {
-  height: 56px;
+  height: 48px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   padding: 0 16px;
@@ -798,7 +798,7 @@ textarea {
 .form-select {
   border: 1px solid #dceaea;
   border-radius: 16px;
-  padding: 16px;
+  padding: 0 16px;
   font-size: 15px;
   background: white;
 }

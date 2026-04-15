@@ -26,22 +26,22 @@
 
         <div class="review-confirm-item">
           <span>名前</span>
-          <p><%= @reservation.owner_name %></p>
+          <p><%= @customer.owner_name %></p>
         </div>
 
         <div class="review-confirm-item">
           <span>電話番号</span>
-          <p><%= @reservation.phone_number %></p>
+          <p><%= @customer.phone_number %></p>
         </div>
 
         <div class="review-confirm-item">
           <span>犬の名前</span>
-          <p><%= @reservation.dog_name %></p>
+          <p><%= @customer&.dog_name %></p>
         </div>
 
         <div class="review-confirm-item">
           <span>犬種</span>
-          <p><%= @reservation.dog_breed %></p>
+          <p><%= @customer&.dog_breed %></p>
         </div>
 
         <div class="review-confirm-item">
@@ -76,10 +76,7 @@
         method: :post,
         data: { turbo: false } do %>
 
-        <%= hidden_field_tag "reservation[owner_name]", @reservation.owner_name %>
-        <%= hidden_field_tag "reservation[phone_number]", @reservation.phone_number %>
-        <%= hidden_field_tag "reservation[dog_name]", @reservation.dog_name %>
-        <%= hidden_field_tag "reservation[dog_breed]", @reservation.dog_breed %>
+        <%= hidden_field_tag "reservation[customer_id]", @reservation.customer_id %>
         <%= hidden_field_tag "reservation[service_type]", @reservation.service_type %>
         <%= hidden_field_tag "reservation[pickup_required]", @reservation.pickup_required %>
         <%= hidden_field_tag "reservation[reserved_date]", @date %>
