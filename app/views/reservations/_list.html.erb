@@ -5,6 +5,7 @@
       <th>顧客名</th>
       <th>犬名</th>
       <th>電話</th>
+      <th>送迎</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -28,7 +29,7 @@
 
         <td>
           <div class="cell-with-icon">
-            <i class="bi bi-heart"></i>
+            <i class="fa-solid fa-dog"></i>
             <%= r.customer&.dog_name %>
           </div>
         </td>
@@ -40,14 +41,24 @@
           </div>
         </td>
 
-        <td class="action-buttons">
-          <%= link_to "#", class: "icon-btn edit-btn" do %>
-            <i class="bi bi-pencil"></i>
-          <% end %>
+        <td>
+          <span class="pickup-badge <%= r.pickup_required ? 'on' : 'off' %>">
+            <%= r.pickup_required ? "送迎あり" : "送迎なし" %>
+          </span>
+        </td>
 
-          <%= button_to "#",
+        <td class="action-buttons">
+          <%= link_to edit_reservation_path(r.id),
+          data: { turbo: false },
+          class: "icon-btn edit-btn" do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+
+        
+
+          <%= button_to destroy_reservation_path(r.id),
             method: :delete,
-            data: { confirm: "削除しますか？" },
+            data: { confirm: "この予約を削除しますか？" },
             class: "icon-btn delete-btn" do %>
             <i class="bi bi-trash"></i>
           <% end %>

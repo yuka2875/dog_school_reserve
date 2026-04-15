@@ -5,7 +5,7 @@
   <div class="admin-main reservation-page new-customer-page admin-reservation-page">
 
     <div class="back-link">
-      <%= link_to "/admin/reservations" do %>
+      <%= link_to admin_reservations_list_path do %>
         <i class="bi bi-arrow-left"></i>
         予約一覧に戻る
       <% end %>
@@ -17,9 +17,9 @@
     </div>
 
     <%= form_with model: @reservation,
-        url: review_admin_reservations_path,
-        method: :post,
-        local: true do |f| %>
+      url: review_admin_reservations_path,
+      method: :post,
+      data: { turbo: false } do |f| %>
 
       <div class="admin-reservation-container">
 
@@ -45,7 +45,7 @@
                 <%= f.radio_button :reserved_time, slot[:value], disabled: disabled %>
 
                 <div class="time-content">
-                  <span class="time-text"><%= slot[:time] %></span>
+                  <span class="time-text"><%= slot[:value] %></span>
                   <span class="time-meta">
                     <%= slot[:available] %> / <%= slot[:total] %>
                   </span>
@@ -94,6 +94,18 @@
                   ["保育園", "nursery"],
                   ["ホテル", "hotel"],
                   ["一時預かり", "temporary_care"]
+                ],
+                {},
+                class: "form-select" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :pickup_required, "送迎" %>
+
+              <%= f.select :pickup_required,
+                [
+                  ["なし", false],
+                  ["あり", true]
                 ],
                 {},
                 class: "form-select" %>

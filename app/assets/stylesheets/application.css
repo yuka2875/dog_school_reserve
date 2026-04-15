@@ -1153,12 +1153,15 @@ textarea {
 }
 
 .admin-calendar-day {
-  width: 42px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .calendar-detail h3 {
@@ -1205,14 +1208,14 @@ textarea {
   text-align: right;
 }
 
-/* .booking-price {
-  font-weight: 600;
-} */
-
 .admin-calendar-day.selected {
   background: #5fb3b3;
   color: #ffffff;
   font-weight: 600;
+}
+
+.admin-calendar-day.today {
+  border: 2px solid #6bb3b5;
 }
 
 .service-group {
@@ -1239,7 +1242,7 @@ textarea {
 .booking-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 16px;
   border-radius: 16px;
   background: #ffffff;
@@ -1260,6 +1263,7 @@ textarea {
   border-radius: 12px;
   min-width: 64px;
   text-align: center;
+  margin-right: 8px;
 }
 
 .time {
@@ -1269,16 +1273,48 @@ textarea {
 }
 
 .booking-info {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto auto auto; /* ←変更 */
+  gap: 20px;
+  flex: 1;
+  max-width: 420px;
+}
+.booking-info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.booking-info .cell-with-icon {
+  color: #334155;
+}
+
+.booking-info i {
+  color: #94a3b8;
 }
 
 .booking-meta {
+  margin-left: auto;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.price {
-  font-weight: 600;
+.pickup-badge {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.pickup-badge.on {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.pickup-badge.off {
+  background: #f1f5f9;
+  color: #64748b;
 }
 
 .day-number {
@@ -1688,6 +1724,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: flex-start;
 }
 
 .cell-with-icon i {
@@ -1732,6 +1769,11 @@ textarea {
   text-align: left;
 }
 
+.reservations-table th:last-child {
+  text-align: right;
+  padding-right: 25px;
+}
+
 .reservations-table td {
   font-size: 15px;
   color: #5c7878;
@@ -1774,12 +1816,16 @@ textarea {
 .calendar-week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
   margin-bottom: 8px;
   text-align: center;
 }
 .calendar-week span {
-  font-size: 12px;
+  font-size: 14px;
   color: #7a8c8c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .new-calendar-header {
   display: flex;
@@ -1794,9 +1840,14 @@ textarea {
   color: #0f2c3f;
 }
 
+.new-calendar-header a {
+  text-decoration: none;
+}
+
 .new-calendar-header .month-arrow {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
   border-radius: 10px;
   background: #f3f7f7;
   display: flex;
@@ -2076,4 +2127,38 @@ textarea {
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.alert-message,
+.notice-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 9999;
+
+  padding: 16px 20px;
+  border-radius: 10px;
+  min-width: 250px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.alert-message {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.notice-message {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.dashboard-booking {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-booking .booking-one-line:last-child {
+  margin-left: auto;
 }

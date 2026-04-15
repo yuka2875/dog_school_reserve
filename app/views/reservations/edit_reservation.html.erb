@@ -1,0 +1,85 @@
+<div class="admin-layout">
+
+  <%= render "shared/sidebar" %>
+
+  <main class="admin-main new-customer-page">
+
+    <div class="back-link">
+      <%= link_to admin_reservations_list_path do %>
+        <i class="bi bi-arrow-left"></i>
+        予約一覧に戻る
+      <% end %>
+    </div>
+
+    <div class="page-title">
+      <h1>予約編集</h1>
+      <p>予約情報を更新します</p>
+    </div>
+
+    <div class="customer-form-card">
+      <h2>予約情報</h2>
+
+      <%= form_with model: @reservation,
+        url: update_reservation_path(@reservation),
+        method: :patch do |f| %>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <%= f.label :reserved_date, "日付" %>
+            <%= f.date_field :reserved_date %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :reserved_time, "時間" %>
+            <%= f.text_field :reserved_time %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :owner_name, "名前" %>
+            <%= f.text_field :owner_name %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :phone_number, "電話番号" %>
+            <%= f.text_field :phone_number %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :dog_name, "犬名" %>
+            <%= f.text_field :dog_name %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :dog_breed, "犬種" %>
+            <%= f.text_field :dog_breed %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :service_type, "サービス" %>
+            <%= f.select :service_type,
+              [
+                ["犬の幼稚園", "kindergarten"],
+                ["保育園", "nursery"],
+                ["ホテル", "hotel"],
+                ["一時預かり", "temporary_care"]
+              ],
+              {},
+              class: "form-select" %>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "更新する", class: "submit-btn" %>
+
+          <%= link_to "キャンセル",
+            admin_reservations_list_path,
+            class: "cancel-btn" %>
+        </div>
+
+      <% end %>
+    </div>
+
+  </main>
+</div>

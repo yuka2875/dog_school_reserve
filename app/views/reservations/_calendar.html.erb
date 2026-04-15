@@ -60,7 +60,7 @@
             view: "calendar",
             date: date
           ),
-          class: "admin-calendar-day #{'selected' if selected_date == date} ",
+          class: "admin-calendar-day #{'selected' if selected_date == date} #{'today' if date == Date.today}",
           data: { turbo: false } do %>
 
             <div class="day-number"><%= day %></div>
@@ -113,14 +113,26 @@
                 </div>
 
                 <div class="booking-info">
-                  <%= r.customer&.owner_name %>
-                  <div class="dog-name">
+                  <div class="cell-with-icon">
+                    <i class="bi bi-person"></i>
+                    <%= r.customer&.owner_name %>
+                  </div>
+
+                  <div class="cell-with-icon">
+                    <i class="fa-solid fa-dog"></i>
                     <%= r.customer&.dog_name %>
+                  </div>
+
+                  <div class="cell-with-icon">
+                    <i class="bi bi-telephone"></i>
+                    <%= r.customer&.phone_number %>
                   </div>
                 </div>
 
                 <div class="booking-meta">
-                  <div class="price">¥8,000</div>
+                  <span class="pickup-badge <%= r.pickup_required ? 'on' : 'off' %>">
+                    <%= r.pickup_required ? "送迎あり" : "送迎なし" %>
+                  </span>
                   <div class="status-badge confirmed">確定</div>
                 </div>
 

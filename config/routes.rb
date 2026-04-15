@@ -22,4 +22,7 @@ Rails.application.routes.draw do
   post "admin/reservations/review", to: "reservations#review", as: :review_admin_reservations
   get  "admin/sns", to: "admin/sns_posts#index", as: :admin_sns
   post "admin/sns/generate", to: "admin/sns_posts#generate", as: :admin_sns_generate
+  delete "admin/reservations/:id", to: "reservations#destroy_reservation", as: :destroy_reservation
+  get "admin/reservations/:id/edit", to: "reservations#edit_reservation", as: :edit_reservation
+  patch "admin/reservations/:id", to: "reservations#update_reservation", as: :update_reservation
 end

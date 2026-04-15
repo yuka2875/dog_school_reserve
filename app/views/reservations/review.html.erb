@@ -46,7 +46,12 @@
 
         <div class="review-confirm-item">
           <span>サービス</span>
-          <p><%= @reservation.service_type %></p>
+          <p><%= {
+            "kindergarten" => "犬の幼稚園",
+            "nursery" => "保育園",
+            "hotel" => "ホテル",
+            "temporary_care" => "一時預かり"
+          }[@reservation.service_type] %></p>
         </div>
 
         <div class="review-confirm-item">
@@ -59,17 +64,25 @@
           <p><%= @time %></p>
         </div>
 
+        <div class="review-confirm-item">
+          <span>送迎</span>
+          <p><%= @reservation.pickup_required ? "あり" : "なし" %></p>
+        </div>
+
       </div>
 
       <!-- 送信 -->
-      <%= form_with url: admin_reservations_path, method: :post do %>
+      <%= form_with url: admin_reservations_path,
+        method: :post,
+        data: { turbo: false } do %>
 
         <%= hidden_field_tag "reservation[owner_name]", @reservation.owner_name %>
         <%= hidden_field_tag "reservation[phone_number]", @reservation.phone_number %>
         <%= hidden_field_tag "reservation[dog_name]", @reservation.dog_name %>
         <%= hidden_field_tag "reservation[dog_breed]", @reservation.dog_breed %>
         <%= hidden_field_tag "reservation[service_type]", @reservation.service_type %>
-        <%= hidden_field_tag :date, @date %>
+        <%= hidden_field_tag "reservation[pickup_required]", @reservation.pickup_required %>
+        <%= hidden_field_tag "reservation[reserved_date]", @date %>
         <%= hidden_field_tag "reservation[reserved_time]", @time %>
 
         <div class="form-actions">

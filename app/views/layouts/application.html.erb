@@ -26,6 +26,17 @@
   </head>
 
   <body>
+    <% if flash[:alert] %>
+      <div class="alert-message">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <% if flash[:notice] %>
+      <div class="notice-message">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
     <%= yield %>
     <script>
       document.addEventListener("turbo:load", function () {

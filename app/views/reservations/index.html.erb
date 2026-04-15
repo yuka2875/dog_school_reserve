@@ -86,7 +86,7 @@
             <div class="slot-content">
               <div class="slot-left">
                 <i class="fa-regular fa-clock"></i>
-                <span><%= slot[:time] %></span>
+                <span><%= slot[:value] %></span>
               </div>
 
               <div class="slot-right">
@@ -110,17 +110,17 @@
             year: @selected_date.year,
             month: @selected_date.month,
             day: @selected_date.day,
-            time: slot[:time],
+            time: slot[:value],
             reservation: @reservation_data
           ), class: "slot-link" do %>
 
             <div class="slot
-              <%= 'selected-slot' if @selected_time == slot[:time] %>">
+              <%= 'selected-slot' if @selected_time == slot[:value] %>">
 
               <div class="slot-content">
                 <div class="slot-left">
                   <i class="fa-regular fa-clock"></i>
-                  <span><%= slot[:time] %></span>
+                  <span><%= slot[:value] %></span>
                 </div>
 
                 <div class="slot-right">
@@ -150,7 +150,7 @@
 
 
     <%= hidden_field_tag :date, @selected_date %>
-    <%= hidden_field_tag :time, @selected_time %>
+    <%= hidden_field_tag :time, @selected_time&.split(" - ")&.first %>
 
     <% @reservation_data.each do |k,v| %>
       <%= hidden_field_tag "reservation[#{k}]", v %>

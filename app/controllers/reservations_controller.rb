@@ -6,10 +6,9 @@ class ReservationsController < ApplicationController
   def customers
     if params[:search].present?
       @customers = Customer.where(
-        "owner_name LIKE ? OR phone_number LIKE ?",
-        "%#{params[:search]}%",
-        "%#{params[:search]}%"
-      ).order(created_at: :desc)
+        "owner_name LIKE :q OR phone_number LIKE :q OR dog_name LIKE :q",
+        q: "%#{params[:search]}%"
+        ).order(created_at: :desc)
     else
       @customers = Customer.order(created_at: :desc)
     end
@@ -17,9 +16,12 @@ class ReservationsController < ApplicationController
 
   def destroy_customer
     customer = Customer.find(params[:id])
-    customer.destroy
 
-    redirect_to "/admin/customers"
+    if customer.destroy
+      redirect_to "/admin/customers"
+    else
+      redirect_to "/admin/customers", alert: "予約があるため削除できません"
+    end
   end
 
   def edit_customer
@@ -67,7 +69,7 @@ class ReservationsController < ApplicationController
     }
     today = Date.today
 
-    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
+    slot_times = [ "09:00", "12:00", "15:00", "18:00" ]
 
     @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
@@ -78,8 +80,8 @@ class ReservationsController < ApplicationController
       {
         time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
         value: time,
-        available: 6 - booked_count,
-        total: 6
+        available: 10 - booked_count,
+        total: 10
       }
     end
   end
@@ -103,7 +105,7 @@ class ReservationsController < ApplicationController
 
     @selected_time = params[:time]
 
-    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
+    slot_times = [ "09:00", "12:00", "15:00", "18:00" ]
 
     @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
@@ -114,8 +116,8 @@ class ReservationsController < ApplicationController
       {
         time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
         value: time,
-        available: 6 - booked_count,
-        total: 6
+        available: 10 - booked_count,
+        total: 10
       }
     end
   end
@@ -158,7 +160,7 @@ class ReservationsController < ApplicationController
       customer: customer,
 
       reserved_date: params[:date],
-      reserved_time: params[:time],
+      reserved_time: params[:time]&.split(" - ")&.first,
 
       owner_name: data[:owner_name],
       phone_number: data[:phone_number],
@@ -193,7 +195,7 @@ class ReservationsController < ApplicationController
     @next_month = @selected_date.next_month
 
     # 空き時間
-    slot_times = [ "09:00", "10:00", "11:00", "13:00", "14:00", "15:00" ]
+    slot_times = [ "09:00", "12:00", "15:00", "18:00" ]
 
     @time_slots = slot_times.map do |time|
       booked_count = Reservation.where(
@@ -204,41 +206,80 @@ class ReservationsController < ApplicationController
       {
         time: "#{time} - #{(Time.parse(time) + 1.hour).strftime('%H:%M')}",
         value: time,
-        available: 6 - booked_count,
-        total: 6
+        available: 10 - booked_count,
+        total: 10
       }
     end
   end
 
   def review
     @reservation = Reservation.new(reservation_params)
-    @date = params[:date]
-    @time = params[:reservation][:reserved_time]
+    @date = @reservation.reserved_date
+    @time = @reservation.reserved_time
   end
 
   def create
-    @reservation = Reservation.new(reservation_params)
-    @reservation.save
-    redirect_to admin_reservations_list_path(
-      view: "calendar",
-      date: @reservation.reserved_date
+    data = reservation_params
+
+    customer = Customer.find_or_create_by(
+      owner_name: data[:owner_name],
+      phone_number: data[:phone_number]
     )
+
+    @reservation = Reservation.new(data)
+    @reservation.customer = customer
+
+    if @reservation.save
+      redirect_to admin_reservations_list_path(
+        view: "calendar",
+        date: @reservation.reserved_date
+      )
+    else
+      Rails.logger.debug @reservation.errors.full_messages
+    end
   end
 
   def list
     @view = params[:view] || "list"
 
-    @reservations = Reservation.includes(:customer)
+    @reservations = Reservation.includes(:customer).order(reserved_date: :asc, reserved_time: :asc)
     @reserved_dates = Reservation.pluck(:reserved_date).map(&:to_date).uniq
 
-    if params[:date].present?
-      selected_date = Date.parse(params[:date])
-      @daily_reservations = @reservations.where(reserved_date: selected_date)
-    else
-      @daily_reservations = []
-    end
+    selected_date = params[:date].present? ? Date.parse(params[:date]) : Date.today
+
+    @daily_reservations = @reservations.where(reserved_date: selected_date).order(reserved_time: :asc)
     @daily_reservations_grouped = @daily_reservations.group_by(&:service_type)
     @reservation_counts = Reservation.group(:reserved_date).count.transform_keys(&:to_date)
+  end
+
+  def destroy_reservation
+    reservation = Reservation.find(params[:id])
+    reservation.destroy
+
+    redirect_to admin_reservations_list_path, notice: "予約を削除しました"
+  end
+
+
+
+  def edit_reservation
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def update_reservation
+    @reservation = Reservation.find(params[:id])
+
+    if @reservation.update(reservation_params)
+      @reservation.customer.update(
+        owner_name: @reservation.owner_name,
+        phone_number: @reservation.phone_number,
+        dog_name: @reservation.dog_name,
+        dog_breed: @reservation.dog_breed
+      )
+
+      redirect_to admin_reservations_list_path, notice: "予約を更新しました"
+    else
+      render :edit_reservation
+    end
   end
 
   private
@@ -255,7 +296,9 @@ class ReservationsController < ApplicationController
       :service_type,
       :referral_source,
       :address,
-      :pickup_required
+      :pickup_required,
+      :reserved_date,
+      :reserved_time
     )
   end
 
