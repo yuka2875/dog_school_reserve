@@ -4,7 +4,10 @@ class Admin::SnsPostsController < ApplicationController
 
   def generate
     dog_name = params[:dog_name].presence || "わんちゃん"
-    shop_name = params[:shop_name].presence || "〇〇店"
+    shop_name = params[:shop_name]
+
+    header = shop_name.present? ? "bonne puppy#{shop_name}です" : "bonne puppyです"
+
     month = params[:month].to_i
     day = params[:day].to_i
     post_type = params[:post_type]
@@ -19,7 +22,7 @@ class Admin::SnsPostsController < ApplicationController
       @idea = "#{m}月の休園日のお知らせです"
 
       @caption = <<~TEXT
-        bonne puppy#{shop_name}です😌✨
+        #{header}😌✨
         #{m}月の休園日のお知らせです📣
         #{m}月#{d}日（#{wday}）は店舗清掃・店舗ミーティングの為、【幼稚園・保育園】はお休みとなります🙇‍♀️
         【一時預かり・ホテル】のご予約は受け付けておりますのでお気軽にご連絡下さいませ🌟
@@ -48,6 +51,21 @@ class Admin::SnsPostsController < ApplicationController
 
     render :index
   end
+
+  helper_method :shops
+
+  def shops
+    SHOPS
+  end
+
+    SHOPS = {
+    "弁天町店" => { area_tags: [ "#弁天町犬", "#弁天町ペット", "#弁天町ドッグ" ] },
+    "森ノ宮店" => { area_tags: [ "#森ノ宮犬", "#森ノ宮ペット", "#森ノ宮ドッグ" ] },
+    "心斎橋店" => { area_tags: [ "#心斎橋犬", "#心斎橋ペット", "#心斎橋ドッグ" ] },
+    "北浜店"   => { area_tags: [ "#北浜犬", "#北浜ペット", "#北浜ドッグ" ] },
+    "天満店"   => { area_tags: [ "#天満犬", "#天満ペット", "#天満ドッグ" ] },
+    "立売堀店" => { area_tags: [ "#立売堀犬", "#立売堀ペット", "#立売堀ドッグ" ] }
+  }.freeze
 
   private
 
@@ -78,7 +96,7 @@ class Admin::SnsPostsController < ApplicationController
         "#{name}が楽しく過ごしています🐶現在ご予約受付中です✨",
         "#{name}も安心して過ごしています😊ご利用お待ちしております🐾"
       ]
-    else # polite
+    else # politea
       [
         "#{name}がご来店されました。穏やかに過ごされています。",
         "#{name}、本日も落ち着いて過ごしていただいております。",
@@ -88,22 +106,20 @@ class Admin::SnsPostsController < ApplicationController
   end
 
   def hashtags(shop_name)
+  fixed = [
+    "#bonnepuppy",
+    "#ボンパピ"
+    # "#ボンパピ#{shop_name}"
+  ]
+  fixed << "#ボンパピ#{shop_name}" if shop_name.present?
+
   common = [
     "#犬の幼稚園",
     "#犬ホテル",
     "#一時預かり"
   ]
 
-  area_tags = case shop_name
-  when "福岡店"
-      [ "#福岡犬", "#福岡ペット", "#福岡ドッグ" ]
-  when "博多店"
-      [ "#博多犬", "#博多ペット", "#博多ドッグ" ]
-  when "天神店"
-      [ "#天神犬", "#天神ペット", "#天神ドッグ" ]
-  else
-      []
-  end
+  area_tags = SHOPS.dig(shop_name, :area_tags) || []
 
   optional = [
     "#犬好きさんと繋がりたい",
@@ -111,7 +127,6 @@ class Admin::SnsPostsController < ApplicationController
       "#わんこ",
       "#犬スタグラム",
       "#doglife",
-      "#犬バカ部",
       "#いぬすたぐらむ",
       "#犬好き",
       "#犬好きな人と繋がりたい",
@@ -124,6 +139,8 @@ class Admin::SnsPostsController < ApplicationController
       "#犬との生活"
   ]
 
-  common + area_tags + optional.sample(3)
+  random_tags = (common + area_tags + optional).sample(5)
+
+  (fixed + random_tags).uniq
   end
 end

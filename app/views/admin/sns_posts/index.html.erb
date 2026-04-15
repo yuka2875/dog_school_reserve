@@ -19,12 +19,14 @@
           <!-- 店舗 -->
           <div class="form-group">
             <label>店舗名 <span class="required">*</span></label>
-            <select name="shop_name">
-              <option value="">選択してください</option>
-              <option value="福岡店" <%= "selected" if params[:shop_name] == "福岡店" %>>福岡店</option>
-              <option value="博多店" <%= "selected" if params[:shop_name] == "博多店" %>>博多店</option>
-              <option value="天神店" <%= "selected" if params[:shop_name] == "天神店" %>>天神店</option>
-            </select>
+              <select name="shop_name">
+                <option value="">選択してください</option>
+                <% shops.keys.each do |name| %>
+                  <option value="<%= name %>" <%= "selected" if params[:shop_name] == name %>>
+                    <%= name %>
+                  </option>
+                <% end %>
+              </select>
           </div>
 
           <!-- 犬 -->
