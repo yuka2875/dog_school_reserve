@@ -123,10 +123,10 @@
 
             <div class="pickup-info">
               <p class="dog-owner">
-                <strong><%= r.dog_name %></strong>
-                （<%= r.owner_name %>様）
+                <strong><%= r.customer&.dog_name %></strong>
+                （<%= r.customer&.owner_name %>様）
               </p>
-              <p class="address"><%= r.address %></p>
+              <p class="address"><%= r.customer&.address %></p>
             </div>
           </div>
         <% end %>
@@ -154,9 +154,9 @@
 
       <% google_calendar_url =
         "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-        "&text=#{CGI.escape("#{r.dog_name}（#{r.owner_name}様）")}" +
+        "&text=#{CGI.escape("#{r.customer&.dog_name}（#{r.customer&.owner_name}様）")}" +
         "&dates=#{start_time}/#{end_time_full}" +
-        "&details=#{CGI.escape("サービス：#{service_label}\n住所：#{r.address}")}"
+        "&details=#{CGI.escape("サービス：#{service_label}\n住所：#{r.customer&.address}")}"
       %>
 
       <div class="booking-card dashboard-booking">
@@ -167,8 +167,8 @@
           <i class="bi bi-calendar-check booking-icon"></i>
 
           <span class="booking-one-line">
-            <strong><%= r.dog_name %></strong>
-            （<%= r.owner_name %>様）
+            <strong><%= r.customer&.dog_name %></strong>
+            （<%= r.customer&.owner_name %>様）
             ｜<%= r.reserved_date %> <%= r.reserved_time %>
           </span>
 
